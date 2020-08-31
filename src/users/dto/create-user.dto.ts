@@ -1,7 +1,7 @@
 /**
  * trida reprezentujici prichozi objekt na vytvoreni uzivatele
  */
-import {IsNotEmpty, IsNumber, IsOptional, IsString, Matches, Max, MaxLength, Min, MinLength} from "class-validator";
+import {IsNotEmpty, IsNumber, IsOptional, IsString, Matches, MaxLength, MinLength} from "class-validator";
 
 export class CreateUserDto {
 
