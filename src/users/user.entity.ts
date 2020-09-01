@@ -1,5 +1,4 @@
 import {BaseEntity, Column, Entity, IsNull, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
-import {Rights} from '../rights/repositories/rights.repository';
 
 @Entity('Users')
 export class User extends BaseEntity{
@@ -16,7 +15,7 @@ export class User extends BaseEntity{
   @Column({length: 50})
   surname: string;
 
-  @Column({length: 100})
+  @Column({length: 100, select: false})
   password: string;
 
   @Column('int', {nullable: true})
