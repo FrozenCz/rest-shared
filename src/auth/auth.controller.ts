@@ -1,12 +1,12 @@
 import {Body, Controller, Get, Param, ParseIntPipe, Post, Query, UsePipes, ValidationPipe} from '@nestjs/common';
 import {CreateUserDto} from './dto/create-user.dto';
-import {UsersService} from './users.service';
+import {AuthService} from './auth.service';
 import {User} from './user.entity';
 import {GetUsersFilterDto} from "./dto/get-users-filter.dto";
 
-@Controller('users')
-export class UsersController {
-    constructor(private usersService: UsersService) {
+@Controller('auth')
+export class AuthController {
+    constructor(private usersService: AuthService) {
     }
 
     @Get()
@@ -21,7 +21,7 @@ export class UsersController {
 
     @Post()
     @UsePipes(ValidationPipe)
-    createUser(@Body() createUserDto: CreateUserDto): Promise<User> {
+    createUser(@Body() createUserDto: CreateUserDto): Promise<void> {
         return this.usersService.createUser(createUserDto);
     }
 

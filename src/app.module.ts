@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import {typeOrmConfig} from './config/typeorm.config';
-import {UsersService} from './users/users.service';
-import {UserRepository} from './users/repositories/user.repository';
+import {AuthService} from './auth/auth.service';
+import {UserRepository} from './auth/repositories/user.repository';
 
 @Module({
-  imports: [ TypeOrmModule.forRoot(typeOrmConfig), TypeOrmModule.forFeature([UserRepository]), UsersModule],
+  imports: [ TypeOrmModule.forRoot(typeOrmConfig), TypeOrmModule.forFeature([UserRepository]), AuthModule],
   controllers: [AppController],
-  providers: [AppService, UsersService],
+  providers: [AppService, AuthService],
 })
 export class AppModule {}

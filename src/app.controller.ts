@@ -1,12 +1,12 @@
 import {Controller, Get} from '@nestjs/common';
 import {AppService} from './app.service';
-import {UsersService} from './users/users.service';
-import {CreateUserDto} from './users/dto/create-user.dto';
+import {AuthService} from './auth/auth.service';
+import {CreateUserDto} from './auth/dto/create-user.dto';
 
 @Controller()
 export class AppController {
 
-  constructor(private readonly appService: AppService, private usersService: UsersService) {
+  constructor(private readonly appService: AppService, private usersService: AuthService) {
     this.usersService.countUsers().then(
       (usersCount) => {
         if (!usersCount) {
