@@ -4,6 +4,8 @@ import {User} from './user.entity';
 import {GetUsersFilterDto} from "./dto/get-users-filter.dto";
 import {CreateUserDto} from "./dto/create-user.dto";
 import {AuthCredentialsDto} from "./dto/auth-credentials.dto";
+import {InjectRepository} from "@nestjs/typeorm";
+import {JwtService} from "@nestjs/jwt";
 
 /**
  * AuthService
@@ -12,8 +14,11 @@ import {AuthCredentialsDto} from "./dto/auth-credentials.dto";
  */
 @Injectable()
 export class AuthService {
-    constructor(private userRepository: UserRepository) {
-    }
+    constructor(
+        @InjectRepository(UserRepository)
+        private userRepository: UserRepository,
+        private jwtService: JwtService
+    ) {}
 
     /**
      * vraci pocet uzivatelu

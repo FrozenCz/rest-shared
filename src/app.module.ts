@@ -10,6 +10,6 @@ import {UserRepository} from './auth/repositories/user.repository';
 @Module({
   imports: [ TypeOrmModule.forRoot(typeOrmConfig), TypeOrmModule.forFeature([UserRepository]), AuthModule],
   controllers: [AppController],
-  providers: [AppService, AuthService],
+  providers: [AppService],
 })
 export class AppModule {}
