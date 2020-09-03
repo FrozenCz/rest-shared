@@ -2,7 +2,7 @@ import {BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn} from 'typ
 import {User} from '../auth/user.entity';
 import {Rights} from './rights.entity';
 
-@Entity('UsersRights')
+@Entity()
 export class UsersRights extends BaseEntity {
 
   @PrimaryGeneratedColumn()

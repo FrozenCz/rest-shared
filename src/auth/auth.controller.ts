@@ -3,10 +3,17 @@ import {CreateUserDto} from './dto/create-user.dto';
 import {AuthService} from './auth.service';
 import {User} from './user.entity';
 import {GetUsersFilterDto} from "./dto/get-users-filter.dto";
+import {AuthCredentialsDto} from "./dto/auth-credentials.dto";
 
 @Controller('auth')
 export class AuthController {
     constructor(private usersService: AuthService) {
+    }
+
+
+    @Post()
+    createUser(@Body(ValidationPipe) createUserDto: CreateUserDto): Promise<void> {
+        return this.usersService.createUser(createUserDto);
     }
 
     @Get()
@@ -19,10 +26,9 @@ export class AuthController {
         return this.usersService.getUserById(id);
     }
 
-    @Post()
-    @UsePipes(ValidationPipe)
-    createUser(@Body() createUserDto: CreateUserDto): Promise<void> {
-        return this.usersService.createUser(createUserDto);
+    @Post('/signin')
+    signIn(@Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto): Promise<string> {
+        return this.usersService.singIn(authCredentialsDto);
     }
 
 

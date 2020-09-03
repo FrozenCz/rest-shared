@@ -1,4 +1,5 @@
 import {TypeOrmModuleOptions} from '@nestjs/typeorm';
+import {JwtModuleOptions} from "@nestjs/jwt";
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
   type: 'postgres',
@@ -10,3 +11,4 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   entities: [__dirname + '/../**/*.entity.js'],
   synchronize: true, // pri produkci neni doporucovano
 };
+

@@ -1,6 +1,8 @@
-import {BaseEntity, Column, Entity, IsNull, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
+import {BaseEntity, Column, Entity, PrimaryGeneratedColumn, Unique} from 'typeorm';
+import * as bcrypt from 'bcryptjs';
 
-@Entity('Users')
+@Entity()
+@Unique(['username'])
 export class User extends BaseEntity{
 
   @PrimaryGeneratedColumn()
@@ -15,10 +17,17 @@ export class User extends BaseEntity{
   @Column({length: 50})
   surname: string;
 
-  @Column({length: 100, select: false})
+  @Column({length: 100, select:false})
   password: string;
+
+  @Column({select: false})
+  salt: string;
 
   @Column('int', {nullable: true})
   idAssetManager: number;
 
+  async validatePassword(password: string): Promise<boolean> {
+    const hash = await bcrypt.hash(password, this.salt);
+    return hash === this.password;
+  }
 }

@@ -1,6 +1,6 @@
 import {BaseEntity, Column, Entity, IsNull, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
 
-@Entity('Rights')
+@Entity()
 export class Rights extends BaseEntity{
 
   @PrimaryGeneratedColumn()

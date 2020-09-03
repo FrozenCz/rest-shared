@@ -1,8 +1,9 @@
-import {Injectable, NotFoundException} from '@nestjs/common';
+import {Injectable, NotFoundException, UnauthorizedException} from '@nestjs/common';
 import {UserRepository} from './repositories/user.repository';
 import {User} from './user.entity';
 import {GetUsersFilterDto} from "./dto/get-users-filter.dto";
 import {CreateUserDto} from "./dto/create-user.dto";
+import {AuthCredentialsDto} from "./dto/auth-credentials.dto";
 
 /**
  * AuthService
@@ -25,6 +26,16 @@ export class AuthService {
         return this.userRepository.createUser(createUserDto);
     }
 
+    async singIn(authCredentialsDto: AuthCredentialsDto): Promise<string> {
+        const username = await this.userRepository.validateUser(authCredentialsDto);
+
+        if (!username) {
+            throw new UnauthorizedException('Invalid credentials');
+        }
+
+        return 'JWT';
+
+    }
 
     async getUserById(userId: number): Promise<User> {
         const found = await this.userRepository.findOne(userId);

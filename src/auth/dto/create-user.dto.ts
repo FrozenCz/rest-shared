@@ -2,22 +2,9 @@
  * trida reprezentujici prichozi objekt na vytvoreni uzivatele
  */
 import {IsNotEmpty, IsNumber, IsOptional, IsString, Matches, MaxLength, MinLength} from "class-validator";
+import {AuthCredentialsDto} from "./auth-credentials.dto";
 
-export class CreateUserDto {
-
-  @IsString()
-  @IsNotEmpty()
-  @MinLength(6)
-  @MaxLength(20)
-  username: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @MinLength(8)
-  @MaxLength(20)
-  @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
-      {message: 'password must contain lower and upper case letters and number'})
-  password: string;
+export class CreateUserDto extends AuthCredentialsDto{
 
   @IsString()
   @MinLength(2)
