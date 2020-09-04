@@ -18,7 +18,7 @@ export class AppController {
           };
           this.usersService.createUser(superAdmin).then(
             (res) => {
-              console.log(res);
+              console.log('Vytvořen admim');
             }
           );
         }

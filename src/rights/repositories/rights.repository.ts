@@ -1,12 +1,8 @@
-import {BaseEntity, Column, Entity, IsNull, PrimaryGeneratedColumn} from 'typeorm';
+import {EntityRepository, Repository} from 'typeorm';
+import {Rights} from "../rights.entity";
 
-@Entity('Rights')
-export class Rights extends BaseEntity{
 
-  @PrimaryGeneratedColumn()
-  idRights: number;
-
-  @Column()
-  description: string;
+@EntityRepository(Rights)
+export class RightsRepository extends Repository<Rights>{
 
 }
