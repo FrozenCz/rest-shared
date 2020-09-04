@@ -1,5 +1,5 @@
 import {TypeOrmModuleOptions} from '@nestjs/typeorm';
-import {JwtModuleOptions} from "@nestjs/jwt";
+
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
   type: 'postgres',
