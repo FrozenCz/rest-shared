@@ -4,8 +4,8 @@ import {Injectable, UnauthorizedException} from "@nestjs/common";
 import {jwtModuleOptions} from "../config/jwt.config";
 import {JwtPayloadInterface} from "./jwt-payload.interface";
 import {InjectRepository} from "@nestjs/typeorm";
-import {UserRepository} from "./repositories/user.repository";
-import {User} from "./user.entity";
+import {UserRepository} from "../users/repositories/user.repository";
+import {User} from "../users/user.entity";
 
 
 @Injectable()

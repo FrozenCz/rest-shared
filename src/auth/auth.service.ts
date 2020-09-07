@@ -1,8 +1,5 @@
 import {Injectable, NotFoundException, UnauthorizedException} from '@nestjs/common';
-import {UserRepository} from './repositories/user.repository';
-import {User} from './user.entity';
-import {GetUsersFilterDto} from "./dto/get-users-filter.dto";
-import {CreateUserDto} from "./dto/create-user.dto";
+import {UserRepository} from '../users/repositories/user.repository';
 import {AuthCredentialsDto} from "./dto/auth-credentials.dto";
 import {InjectRepository} from "@nestjs/typeorm";
 import {JwtService} from "@nestjs/jwt";
@@ -21,16 +18,7 @@ export class AuthService {
         private jwtService: JwtService
     ) {}
 
-    /**
-     * vraci pocet uzivatelu
-     */
-    async countUsers(): Promise<number> {
-        return await this.userRepository.count();
-    }
 
-    async createUser(createUserDto: CreateUserDto): Promise<void>{
-        return await this.userRepository.createUser(createUserDto);
-    }
 
     async singIn(authCredentialsDto: AuthCredentialsDto): Promise< { accessToken: string } > {
         const username = await this.userRepository.validateUser(authCredentialsDto);
@@ -45,19 +33,6 @@ export class AuthService {
 
     }
 
-    async getUserById(userId: number): Promise<User> {
-        const found = await this.userRepository.findOne(userId);
-
-        if (!found) {
-            throw new NotFoundException(`User with ID "${userId}" not found!`);
-        }
-
-        return found;
-    }
-
-    async getUsers(getUsersFilterDto: GetUsersFilterDto): Promise<User[]> {
-        return this.userRepository.getUsers(getUsersFilterDto);
-    }
 
 
 }

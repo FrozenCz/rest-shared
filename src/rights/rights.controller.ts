@@ -1,8 +1,8 @@
 import {Body, Controller, Get, Post, UseGuards, ValidationPipe} from '@nestjs/common';
 import {RightsService} from "./rights.service";
-import {Rights} from "./rights.entity";
 import {AuthGuard} from "@nestjs/passport";
 import {CreateRightsDto} from "./dto/create-rights.dto";
+import {Rights} from "./rights.entity";
 
 @Controller('rights')
 export class RightsController {
@@ -17,7 +17,7 @@ export class RightsController {
     }
 
     @Post()
-    createRights(@Body(ValidationPipe) createRightsDto: CreateRightsDto): Promise<void> {
+    createRights(@Body(ValidationPipe) createRightsDto: CreateRightsDto): Promise<Rights> {
         return this.rightsService.createRights(createRightsDto);
     }
 

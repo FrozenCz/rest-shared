@@ -13,11 +13,12 @@ export class RightsRepository extends Repository<Rights> {
      * creating rights
      * @param createRightsDto
      */
-    async createRights(createRightsDto: CreateRightsDto): Promise<void> {
-        const {description, relatedTo, name} = createRightsDto;
+    async createRights(createRightsDto: CreateRightsDto): Promise<Rights> {
+        const {description, relatedTo, name, tag} = createRightsDto;
         const rights = new Rights();
 
         rights.name = name;
+        rights.tag = tag;
         rights.description = description;
         rights.relatedTo = relatedTo;
 
@@ -26,6 +27,7 @@ export class RightsRepository extends Repository<Rights> {
         } catch (e) {
             throw new InternalServerErrorException(e);
         }
+        return rights;
     }
 
 }

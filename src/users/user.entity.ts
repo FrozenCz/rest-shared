@@ -1,6 +1,5 @@
-import {BaseEntity, Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn, Unique} from 'typeorm';
+import {BaseEntity, Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, Unique} from 'typeorm';
 import * as bcrypt from 'bcryptjs';
-// import {UsersRights} from "../rights/usersRights.entity";
 import {Rights} from "../rights/rights.entity";
 
 @Entity()
@@ -29,6 +28,11 @@ export class User extends BaseEntity{
   idAssetManager: number;
 
   @ManyToMany(type => Rights, {cascade: true} )
+  @JoinTable({
+    name: 'users_rights',
+    joinColumn: {name: 'user_id', referencedColumnName: 'id'},
+    inverseJoinColumn: {name: 'rights_id', referencedColumnName: 'id'}
+  })
   rights: Rights[];
 
   async validatePassword(password: string): Promise<boolean> {
