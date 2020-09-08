@@ -1,6 +1,5 @@
 import {Controller, Get} from '@nestjs/common';
 import {AppService} from './app.service';
-import {AuthService} from './auth/auth.service';
 import {CreateUserDto} from './auth/dto/create-user.dto';
 import {RightsService} from "./rights/rights.service";
 import {UsersService} from "./users/users.service";

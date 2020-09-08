@@ -4,7 +4,6 @@ import {RightsRepository} from "./repositories/rights.repository";
 import {Rights} from "./rights.entity";
 import {CreateRightsDto} from "./dto/create-rights.dto";
 import {RightsList} from "./utils/rights.list";
-import {AuthService} from "../auth/auth.service";
 import {UsersService} from "../users/users.service";
 
 @Injectable()

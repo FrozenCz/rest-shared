@@ -11,7 +11,7 @@ import {RightsGuard} from "./guards/rights.guard";
 import {UsersModule} from "./users/users.module";
 
 @Module({
-    imports: [TypeOrmModule.forRoot(typeOrmConfig), TypeOrmModule.forFeature([UserRepository]), AuthModule, RightsModule, UsersModule],
+    imports: [TypeOrmModule.forRoot(typeOrmConfig), AuthModule, RightsModule, UsersModule],
     controllers: [AppController],
     providers: [
         AppService,

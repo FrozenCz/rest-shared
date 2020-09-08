@@ -4,11 +4,11 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {UserRepository} from "./repositories/user.repository";
 import {User} from "./user.entity";
 import {GetUsersFilterDto} from "../auth/dto/get-users-filter.dto";
+import {AuthCredentialsDto} from "../auth/dto/auth-credentials.dto";
 
 
 @Injectable()
 export class UsersService {
-
     constructor(
         @InjectRepository(UserRepository)
         private userRepository: UserRepository
@@ -19,6 +19,7 @@ export class UsersService {
      * vraci pocet uzivatelu
      */
     async countUsers(): Promise<number> {
+        console.log(await this.userRepository.count());
         return await this.userRepository.count();
     }
 
@@ -40,4 +41,9 @@ export class UsersService {
     async getUsers(getUsersFilterDto: GetUsersFilterDto): Promise<User[]> {
         return this.userRepository.getUsers(getUsersFilterDto);
     }
+
+    async validateUser(authCredentialsDto: AuthCredentialsDto): Promise<string> {
+        return this.userRepository.validateUser(authCredentialsDto);
+    }
+
 }

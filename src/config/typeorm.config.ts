@@ -9,6 +9,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   password: 'postgres',
   database: 'evNest',
   entities: [__dirname + '/../**/*.entity.js'],
+  // entities: ["dist/**/*.entity{.ts,.js}"],
   synchronize: true, // pri produkci neni doporucovano
 };
 

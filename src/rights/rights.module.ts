@@ -7,15 +7,18 @@ import {PassportModule} from "@nestjs/passport";
 import {AuthService} from "../auth/auth.service";
 import {UserRepository} from "../users/repositories/user.repository";
 import {UsersModule} from "../users/users.module";
+import {JwtModule} from "@nestjs/jwt";
+import {jwtModuleOptions} from "../config/jwt.config";
 
 @Module({
   imports: [
+      UsersModule,
       TypeOrmModule.forFeature([RightsRepository]),
       PassportModule.register({defaultStrategy: 'jwt'}),
-      UsersModule
+      JwtModule.register(jwtModuleOptions),
   ],
   controllers: [RightsController],
   providers: [RightsService, AuthService, UserRepository],
-    exports: [RightsService]
+    exports: [RightsService, TypeOrmModule]
 })
 export class RightsModule {}
