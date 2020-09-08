@@ -3,11 +3,17 @@ import {AppService} from './app.service';
 import {CreateUserDto} from './auth/dto/create-user.dto';
 import {RightsService} from "./rights/rights.service";
 import {UsersService} from "./users/users.service";
+import {Rights} from "./rights/rights.entity";
+import {InjectRepository} from "@nestjs/typeorm";
+import {RightsRepository} from "./rights/repositories/rights.repository";
 
 @Controller()
 export class AppController {
 
-    constructor(private readonly appService: AppService, private usersService: UsersService, private rightsService: RightsService) {
+    constructor(
+        @InjectRepository(RightsRepository)
+        private rightsRepository: RightsRepository,
+        private readonly appService: AppService, private usersService: UsersService, private rightsService: RightsService) {
         /**
          * first initiation of superadmin
          */
@@ -41,13 +47,6 @@ export class AppController {
             }
         );
 
-        this.rightsService.countRights().then(
-            (rightsCount) => {
-                if (!rightsCount) {
-                    // this.rightsService.createRights({name: 'Tvorba uživatele'});
-                }
-            }
-        )
 
     }
 

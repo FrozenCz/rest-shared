@@ -11,7 +11,7 @@ import {PassportModule} from "@nestjs/passport";
         PassportModule.register({defaultStrategy: 'jwt'})
     ],
     controllers: [UsersController],
-    providers: [UsersService, UserRepository],
+    providers: [UsersService],
     exports: [UsersService, TypeOrmModule]
 })
 export class UsersModule {

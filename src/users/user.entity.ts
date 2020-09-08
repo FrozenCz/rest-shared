@@ -24,16 +24,18 @@ export class User extends BaseEntity{
   @Column({select: false})
   salt: string;
 
-  @Column('int', {nullable: true})
-  idAssetManager: number;
-
-  @ManyToMany(type => Rights, {cascade: true} )
+  @ManyToMany(type => Rights, {cascade: true, eager: true})
   @JoinTable({
     name: 'users_rights',
     joinColumn: {name: 'user_id', referencedColumnName: 'id'},
     inverseJoinColumn: {name: 'rights_id', referencedColumnName: 'id'}
   })
   rights: Rights[];
+
+  @Column('int', {nullable: true})
+  idAssetManager: number;
+
+
 
   async validatePassword(password: string): Promise<boolean> {
     const hash = await bcrypt.hash(password, this.salt);

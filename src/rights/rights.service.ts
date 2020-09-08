@@ -4,14 +4,15 @@ import {RightsRepository} from "./repositories/rights.repository";
 import {Rights} from "./rights.entity";
 import {CreateRightsDto} from "./dto/create-rights.dto";
 import {RightsList} from "./utils/rights.list";
-import {UsersService} from "../users/users.service";
+import {UserRepository} from "../users/repositories/user.repository";
 
 @Injectable()
 export class RightsService {
     constructor(
         @InjectRepository(RightsRepository)
         private rightsRepository: RightsRepository,
-        private usersService: UsersService
+        @InjectRepository(UserRepository)
+        private usersRepository: UserRepository
     ) {
     }
 
@@ -29,14 +30,21 @@ export class RightsService {
 
     async fillRights(): Promise<void> {
         const allRights = RightsList;
-        const admin = await this.usersService.getUserById(1);
+        const admin = await this.usersRepository.findOne({id: 1});
+        if(!admin.rights) admin.rights = [];
+
         allRights.forEach(right => {
             this.createRights(right).then(
                 (rights) => {
-                    rights.users.push(admin);
+                    admin.rights.push(rights);
                 }
-            )
+            ).then(() => {
+                admin.save();
+                console.log(admin); 
+            })
 
         });
+
+
     }
 }

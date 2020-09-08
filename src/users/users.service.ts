@@ -39,6 +39,12 @@ export class UsersService {
     }
 
     async getUsers(getUsersFilterDto: GetUsersFilterDto): Promise<User[]> {
+        this.userRepository.find().then(users => {
+            users.forEach(user => {
+                console.log(user.rights);
+            })
+        })
+        console.log();
         return this.userRepository.getUsers(getUsersFilterDto);
     }
 

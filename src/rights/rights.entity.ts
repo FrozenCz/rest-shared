@@ -21,12 +21,12 @@ export class Rights extends BaseEntity{
   @Column( )
   relatedTo: RightsCategoryEnum
 
-  @ManyToMany(type=> User, {cascade: true})
-  @JoinTable({
-    name: 'users_rights',
-    joinColumn: {name: 'rights_id', referencedColumnName: 'id'},
-    inverseJoinColumn: {name: 'user_id', referencedColumnName: 'id'}
-  })
-  users: User[]
+  // @ManyToMany(type=> User, {cascade: true})
+  // @JoinTable({
+  //   name: 'users_rights',
+  //   joinColumn: {name: 'rights_id', referencedColumnName: 'id'},
+  //   inverseJoinColumn: {name: 'user_id', referencedColumnName: 'id'}
+  // })
+  // users: User[]
 
 }
