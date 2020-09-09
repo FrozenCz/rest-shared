@@ -5,6 +5,7 @@ import {Rights} from "./rights.entity";
 import {CreateRightsDto} from "./dto/create-rights.dto";
 import {RightsList} from "./utils/rights.list";
 import {UserRepository} from "../users/repositories/user.repository";
+import {User} from "../users/user.entity";
 
 @Injectable()
 export class RightsService {
@@ -47,4 +48,5 @@ export class RightsService {
 
 
     }
+
 }

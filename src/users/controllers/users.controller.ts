@@ -6,6 +6,7 @@ import {User} from "../user.entity";
 import {CreateUserDto} from "../../auth/dto/create-user.dto";
 import {GetUsersFilterDto} from "../../auth/dto/get-users-filter.dto";
 import {UsersService} from "../users.service";
+import {RightsGuard} from "../../guards/rights.guard";
 
 @Controller()
 export class UsersController {
@@ -13,15 +14,18 @@ export class UsersController {
     constructor(private usersService: UsersService) {
     }
 
-    @UseGuards(AuthGuard())
+    @UseGuards(AuthGuard('jwt'))
     @Rights('createUser')
     @Post('users')
     createUser(@GetUser() user: User, @Body(ValidationPipe) createUserDto: CreateUserDto): Promise<void> {
         return this.usersService.createUser(createUserDto);
     }
 
+
+    @UseGuards(AuthGuard())
+    @Rights('createUser')
     @Get('users')
-    getUsers(@Query(ValidationPipe) getUsersFilterDto: GetUsersFilterDto
+    getUsers(@GetUser() user: User, @Query(ValidationPipe) getUsersFilterDto: GetUsersFilterDto
     ): Promise<User[]> {
         return this.usersService.getUsers(getUsersFilterDto);
     }

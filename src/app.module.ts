@@ -1,4 +1,4 @@
-import {Module} from '@nestjs/common';
+import {MiddlewareConsumer, Module, NestModule} from '@nestjs/common';
 import {AppController} from './app.controller';
 import {AppService} from './app.service';
 import {AuthModule} from './auth/auth.module';
@@ -8,6 +8,9 @@ import {RightsModule} from "./rights/rights.module";
 import {APP_GUARD} from "@nestjs/core";
 import {RightsGuard} from "./guards/rights.guard";
 import {UsersModule} from "./users/users.module";
+import {GetUserMiddleware} from "./middleware/get-user.middleware";
+import {UsersController} from "./users/controllers/users.controller";
+import {RightsController} from "./rights/rights.controller";
 
 @Module({
     imports: [TypeOrmModule.forRoot(typeOrmConfig), AuthModule, RightsModule, UsersModule],
@@ -17,5 +20,15 @@ import {UsersModule} from "./users/users.module";
         {provide: APP_GUARD, useClass: RightsGuard}
     ],
 })
-export class AppModule {
+export class AppModule implements NestModule{
+
+    configure(consumer: MiddlewareConsumer): void {
+        consumer
+            .apply(GetUserMiddleware)
+            .forRoutes(
+                UsersController,
+                RightsController
+            )
+    }
+
 }
