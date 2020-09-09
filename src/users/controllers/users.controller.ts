@@ -22,7 +22,7 @@ export class UsersController {
     }
 
 
-    @UseGuards(AuthGuard())
+    @UseGuards(AuthGuard('jwt'), RightsGuard)
     @Rights('createUser')
     @Get('users')
     getUsers(@GetUser() user: User, @Query(ValidationPipe) getUsersFilterDto: GetUsersFilterDto

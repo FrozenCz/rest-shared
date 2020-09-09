@@ -15,12 +15,11 @@ export class RightsGuard implements CanActivate {
 
         const request = context.switchToHttp().getRequest();
         const user = request.user;
-        console.log(user);
+        console.log(request.user);
 
         if (!user || !user.rights) return false;
 
-
-        return rights.some(r => user.rights.includes(r));
+        return user.rights.some((permission) => permission.tag === rights[0]);
     }
 
 }
