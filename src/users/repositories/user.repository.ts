@@ -1,10 +1,11 @@
 import {EntityRepository, Repository} from 'typeorm';
 import {User} from '../user.entity';
-import {GetUsersFilterDto} from "../../auth/dto/get-users-filter.dto";
-import {CreateUserDto} from "../../auth/dto/create-user.dto";
+import {GetUsersFilterDto} from "../dto/get-users-filter.dto";
+import {CreateUserDto} from "../dto/create-user.dto";
 import * as bcrypt from 'bcryptjs';
-import {ConflictException, InternalServerErrorException} from "@nestjs/common";
+import {ConflictException, InternalServerErrorException, NotFoundException} from "@nestjs/common";
 import {AuthCredentialsDto} from "../../auth/dto/auth-credentials.dto";
+import {UpdateUserDto} from "../dto/update-user.dto";
 
 
 @EntityRepository(User)
@@ -44,7 +45,6 @@ export class UserRepository extends Repository<User> {
             .leftJoinAndSelect('user.rights', 'rights')
             .where('user.username = :username', {username})
             .getOne();
-        console.log(user);
 
         if (user && await user.validatePassword(password)) {
             return user;

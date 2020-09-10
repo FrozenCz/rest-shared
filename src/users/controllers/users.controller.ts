@@ -1,37 +1,46 @@
-import {Body, Controller, Get, Param, ParseIntPipe, Post, Query, UseGuards, ValidationPipe} from "@nestjs/common";
+import {Body, Controller, Get, Param, ParseIntPipe, Post, Put, Query, UseGuards, ValidationPipe} from "@nestjs/common";
 import {AuthGuard} from "@nestjs/passport";
-import {Rights} from "../../guards/rights.decorator";
+import {RightsAllowed} from "../../guards/rights-allowed.decorator";
 import {GetUser} from "../utils/get-user.decorator";
 import {User} from "../user.entity";
-import {CreateUserDto} from "../../auth/dto/create-user.dto";
-import {GetUsersFilterDto} from "../../auth/dto/get-users-filter.dto";
+import {CreateUserDto} from "../dto/create-user.dto";
+import {GetUsersFilterDto} from "../dto/get-users-filter.dto";
 import {UsersService} from "../users.service";
 import {RightsGuard} from "../../guards/rights.guard";
+import {UpdateUserDto} from "../dto/update-user.dto";
 
-@Controller()
+
+
+@Controller('users')
 export class UsersController {
 
     constructor(private usersService: UsersService) {
     }
 
-    @UseGuards(AuthGuard('jwt'))
-    @Rights('createUser')
-    @Post('users')
+    @Post()
+    @UseGuards(AuthGuard())
+    @RightsAllowed('createUser')
     createUser(@GetUser() user: User, @Body(ValidationPipe) createUserDto: CreateUserDto): Promise<void> {
         return this.usersService.createUser(createUserDto);
     }
 
-
-    @UseGuards(AuthGuard('jwt'), RightsGuard)
-    @Rights('createUser')
-    @Get('users')
+    @Get()
     getUsers(@GetUser() user: User, @Query(ValidationPipe) getUsersFilterDto: GetUsersFilterDto
     ): Promise<User[]> {
         return this.usersService.getUsers(getUsersFilterDto);
     }
 
-    @Get('users/:id')
+    @Get('/:id')
     getUserById(@Param('id', ParseIntPipe) id:number ): Promise<User>{
         return this.usersService.getUserById(id);
     }
+
+    @Put('/:id')
+    @UseGuards(AuthGuard(), RightsGuard)
+    @RightsAllowed('updateUsersInformation')
+    updateUser(@Param('id', ParseIntPipe) id:number, @GetUser() user:User, @Body(ValidationPipe) updateUserDto: UpdateUserDto): Promise<void> {
+        return this.usersService.updateUser(id, updateUserDto, user);
+    }
+
+
 }

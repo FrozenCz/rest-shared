@@ -1,7 +1,12 @@
 import {CanActivate, ExecutionContext, Injectable} from "@nestjs/common";
 import {Reflector} from "@nestjs/core";
 
-
+/**
+ * guard kontrolujici zda uzivatel ma prava k akci
+ * @class RightsGuard
+ * @author Milan Knop
+ * @return boolean
+ */
 @Injectable()
 export class RightsGuard implements CanActivate {
     constructor(private reflector: Reflector) {
@@ -15,7 +20,6 @@ export class RightsGuard implements CanActivate {
 
         const request = context.switchToHttp().getRequest();
         const user = request.user;
-        console.log(request.user);
 
         if (!user || !user.rights) return false;
 

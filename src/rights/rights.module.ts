@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import {TypeOrmModule} from '@nestjs/typeorm';
-import {RightsController} from './rights.controller';
+import {RightsController} from './controllers/rights.controller';
 import {RightsRepository} from "./repositories/rights.repository";
 import {RightsService} from "./rights.service";
 import {PassportModule} from "@nestjs/passport";

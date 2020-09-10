@@ -1,10 +1,11 @@
 import {Injectable, NotFoundException} from "@nestjs/common";
-import {CreateUserDto} from "../auth/dto/create-user.dto";
+import {CreateUserDto} from "./dto/create-user.dto";
 import {InjectRepository} from "@nestjs/typeorm";
 import {UserRepository} from "./repositories/user.repository";
 import {User} from "./user.entity";
-import {GetUsersFilterDto} from "../auth/dto/get-users-filter.dto";
+import {GetUsersFilterDto} from "./dto/get-users-filter.dto";
 import {AuthCredentialsDto} from "../auth/dto/auth-credentials.dto";
+import {UpdateUserDto} from "./dto/update-user.dto";
 
 
 @Injectable()
@@ -42,4 +43,14 @@ export class UsersService {
         return this.userRepository.getUsers(getUsersFilterDto);
     }
 
+    async updateUser(id:number, updateUserDto: UpdateUserDto, user: User): Promise<void> {
+        const {name, surname} = updateUserDto;
+        const userForUpdate = await this.getUserById(id);
+
+        userForUpdate.name = name;
+        userForUpdate.username = surname;
+        await userForUpdate.save();
+
+        return;
+    }
 }
