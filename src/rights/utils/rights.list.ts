@@ -1,9 +1,25 @@
-import {CreateRightsDto, RightsCategoryEnum} from "../dto/create-rights.dto";
+import {CreateRightsDto} from "../dto/create-rights.dto";
+
+export enum RightsCategory {
+    users = 'users', rights = 'rights',
+}
+
+export enum RightsTag {
+    getUser = 'getUser',
+    createUser = 'createUser',
+    deleteUser = 'deleteUser',
+    updateUsersInformation = 'updateUsersInformation',
+
+    createRights = 'createRights',
+}
 
 export const RightsList: CreateRightsDto[] = [
-    { relatedTo: RightsCategoryEnum.users, tag: 'createUser', name:'tvorba uživatele' },
-    { relatedTo: RightsCategoryEnum.users, tag: 'deleteUser', name:'smazání uživatele' },
-    { relatedTo: RightsCategoryEnum.users, tag: 'updateUsersInformation', name:'aktualizace uživatelských informací', description: 'Aktualizace jména, příjmení a fotografie?' },
+    { relatedTo: RightsCategory.users, tag: RightsTag.getUser, name:'zobrazení uživatele' },
+    { relatedTo: RightsCategory.users, tag: RightsTag.createUser, name:'tvorba uživatele' },
+    { relatedTo: RightsCategory.users, tag: RightsTag.deleteUser, name:'smazání uživatele' },
+    { relatedTo: RightsCategory.users, tag: RightsTag.updateUsersInformation, name:'aktualizace uživatelských informací', description: 'Aktualizace jména, příjmení a fotografie?' },
+
+    { relatedTo: RightsCategory.rights, tag: RightsTag.createRights, name:'tvorba práv' },
     // { relatedTo: RightsCategoryEnum.users, tag: 'updateUsersInformation', name:'aktualizace uživatelských informací', description: 'Aktualizace jména, příjmení a fotografie?' },
 ];
 

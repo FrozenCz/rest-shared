@@ -1,22 +1,21 @@
 import {IsEnum, IsOptional, IsString} from "class-validator";
+import {RightsCategory, RightsTag} from "../utils/rights.list";
 
-export enum RightsCategoryEnum {
-    users = 'users', rights = 'rights',
-}
+
 
 export class CreateRightsDto {
     @IsString()
     name: string;
 
     @IsString()
-    tag: string;
+    tag: RightsTag;
 
     @IsString()
     @IsOptional()
     description?: string;
 
-    @IsEnum(RightsCategoryEnum)
-    relatedTo: RightsCategoryEnum
+    @IsEnum(RightsCategory)
+    relatedTo: RightsCategory
 }
 
 

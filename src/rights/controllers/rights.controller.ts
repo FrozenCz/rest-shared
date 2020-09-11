@@ -5,6 +5,7 @@ import {CreateRightsDto} from "../dto/create-rights.dto";
 import {Rights} from "../rights.entity";
 import {RightsAllowed} from "../../guards/rights-allowed.decorator";
 import {RightsGuard} from "../../guards/rights.guard";
+import {RightsTag} from "../utils/rights.list";
 
 @Controller('rights')
 export class RightsController {
@@ -21,10 +22,11 @@ export class RightsController {
 
     @Post()
     @UseGuards(AuthGuard(), RightsGuard)
-    @RightsAllowed('createRights')
+    @RightsAllowed(RightsTag.createRights)
     createRights(@Body(ValidationPipe) createRightsDto: CreateRightsDto): Promise<Rights> {
         return this.rightsService.createRights(createRightsDto);
     }
 
 }
+
 

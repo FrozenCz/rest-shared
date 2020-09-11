@@ -4,7 +4,6 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {UserRepository} from "./repositories/user.repository";
 import {User} from "./user.entity";
 import {GetUsersFilterDto} from "./dto/get-users-filter.dto";
-import {AuthCredentialsDto} from "../auth/dto/auth-credentials.dto";
 import {UpdateUserDto} from "./dto/update-user.dto";
 
 
@@ -53,4 +52,14 @@ export class UsersService {
 
         return;
     }
+
+    private async assetHierarchyCheck(whoWants: User, whichOne: User): Promise<boolean> {
+        // pokud se jedná o stejného uživatele, nebo pokud je uživatel pod stejným assetManagerem
+        if (whoWants.idAssetManager === whichOne.idAssetManager) return true;
+
+        //nebo pokud je hierarchicky ve stromě
+        //TODO: dodělat tuto fci až budou hotové kategorie, bude potřeba ještě udělat rekurzivní funkci pro zjistění stromu
+        return ;
+    }
+
 }

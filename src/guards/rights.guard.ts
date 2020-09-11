@@ -1,5 +1,6 @@
 import {CanActivate, ExecutionContext, Injectable} from "@nestjs/common";
 import {Reflector} from "@nestjs/core";
+import {RightsTag} from "../rights/utils/rights.list";
 
 /**
  * guard kontrolujici zda uzivatel ma prava k akci
@@ -13,9 +14,10 @@ export class RightsGuard implements CanActivate {
     }
 
     canActivate(context: ExecutionContext): boolean {
-        const rights = this.reflector.get<string[]>('rights', context.getHandler());
+        const rights = this.reflector.get<RightsTag>('RightsAllowed', context.getHandler());
+
         if (!rights) {
-            return true;
+            return false;
         }
 
         const request = context.switchToHttp().getRequest();
@@ -23,7 +25,7 @@ export class RightsGuard implements CanActivate {
 
         if (!user || !user.rights) return false;
 
-        return user.rights.some((permission) => permission.tag === rights[0]);
+        return user.rights.some((permission) => permission.tag === rights);
     }
 
 }

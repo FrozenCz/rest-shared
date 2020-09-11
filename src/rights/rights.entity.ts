@@ -1,7 +1,6 @@
 import {BaseEntity, Column, Entity, IsNull, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
-import {User} from "../users/user.entity";
-import {RightsCategoryEnum} from "./dto/create-rights.dto";
-import {IsOptional} from "class-validator";
+import {RightsCategory, RightsTag} from "./utils/rights.list";
+
 
 @Entity()
 export class Rights extends BaseEntity{
@@ -10,7 +9,7 @@ export class Rights extends BaseEntity{
   id: number;
 
   @Column( {unique: true})
-  tag: string;
+  tag: RightsTag;
 
   @Column({length: 100})
   name: string;
@@ -19,7 +18,7 @@ export class Rights extends BaseEntity{
   description: string;
 
   @Column( )
-  relatedTo: RightsCategoryEnum
+  relatedTo: RightsCategory
 
   // @ManyToMany(type=> User, {cascade: true})
   // @JoinTable({
