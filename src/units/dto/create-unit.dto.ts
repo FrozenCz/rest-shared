@@ -1,4 +1,5 @@
 import {IsInt, IsOptional, IsString} from "class-validator";
+import {Transform} from "class-transformer";
 
 
 export class CreateUnitDto {
@@ -7,6 +8,7 @@ export class CreateUnitDto {
     name: string;
 
     @IsInt()
+    @Transform(value => Number(value))
     @IsOptional()
     parent: number;
 
