@@ -1,7 +1,7 @@
 import {CreateRightsDto} from "../dto/create-rights.dto";
 
 export enum RightsCategory {
-    users = 'users', rights = 'rights',
+    users = 'users', rights = 'rights', units = 'units'
 }
 
 export enum RightsTag {
@@ -11,6 +11,9 @@ export enum RightsTag {
     updateUsersInformation = 'updateUsersInformation',
 
     createRights = 'createRights',
+
+    createUnits = 'createUnits',
+    deleteUnits = 'deleteUnits'
 }
 
 export const RightsList: CreateRightsDto[] = [
@@ -20,6 +23,9 @@ export const RightsList: CreateRightsDto[] = [
     { relatedTo: RightsCategory.users, tag: RightsTag.updateUsersInformation, name:'aktualizace uživatelských informací', description: 'Aktualizace jména, příjmení a fotografie?' },
 
     { relatedTo: RightsCategory.rights, tag: RightsTag.createRights, name:'tvorba práv' },
+
+    { relatedTo: RightsCategory.units, tag: RightsTag.createUnits, name:'tvorba jednotek' },
+    { relatedTo: RightsCategory.units, tag: RightsTag.deleteUnits, name:'mazání jednotek' },
     // { relatedTo: RightsCategoryEnum.users, tag: 'updateUsersInformation', name:'aktualizace uživatelských informací', description: 'Aktualizace jména, příjmení a fotografie?' },
 ];
 
