@@ -4,9 +4,9 @@ import {
     Post,
     ValidationPipe
 } from '@nestjs/common';
-import {AuthService} from '../auth.service';
+import {AuthService} from './auth.service';
 
-import {AuthCredentialsDto} from "../dto/auth-credentials.dto";
+import {AuthCredentialsDto} from "./dto/auth-credentials.dto";
 
 
 @Controller()

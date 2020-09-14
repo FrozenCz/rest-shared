@@ -1,11 +1,11 @@
 import {Body, Controller, Get, Post, UseGuards, ValidationPipe} from '@nestjs/common';
-import {RightsService} from "../rights.service";
+import {RightsService} from "./rights.service";
 import {AuthGuard} from "@nestjs/passport";
-import {CreateRightsDto} from "../dto/create-rights.dto";
-import {Rights} from "../rights.entity";
-import {RightsAllowed} from "../../guards/rights-allowed.decorator";
-import {RightsGuard} from "../../guards/rights.guard";
-import {RightsTag} from "../utils/rights.list";
+import {CreateRightsDto} from "./dto/create-rights.dto";
+import {Rights} from "./rights.entity";
+import {RightsAllowed} from "../guards/rights-allowed.decorator";
+import {RightsGuard} from "../guards/rights.guard";
+import {RightsTag} from "./utils/rights.list";
 
 @Controller('rights')
 export class RightsController {

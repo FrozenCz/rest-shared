@@ -1,5 +1,6 @@
 import {IsInt, IsOptional, IsString} from "class-validator";
 import {Transform} from "class-transformer";
+import {User} from "../../users/user.entity";
 
 
 export class CreateUnitDto {

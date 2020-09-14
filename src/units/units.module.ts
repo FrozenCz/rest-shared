@@ -1,5 +1,5 @@
 import {Module} from "@nestjs/common";
-import {UnitsController} from "./controllers/units.controller";
+import {UnitsController} from "./units.controller";
 import {UsersModule} from "../users/users.module";
 import {UnitsService} from "./units.service";
 import {TypeOrmModule} from "@nestjs/typeorm";

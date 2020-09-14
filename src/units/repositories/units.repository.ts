@@ -6,7 +6,7 @@ import {GetUnitsFilterDto} from "../dto/get-units-filter.dto";
 @EntityRepository(Unit)
 export class UnitsRepository extends Repository<Unit> {
 
-    async getUnits(getUnitsFilterDto: GetUnitsFilterDto): Promise<Unit[]> {
+    async getUnits(getUnitsFilterDto?: GetUnitsFilterDto): Promise<Unit[]> {
         const { parent } = getUnitsFilterDto;
         const query = await this.createQueryBuilder('unit');
 

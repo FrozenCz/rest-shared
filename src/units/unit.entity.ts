@@ -1,14 +1,24 @@
-import {BaseEntity, Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {BaseEntity, Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn} from "typeorm";
+import {User} from "../users/user.entity";
 
 
 @Entity()
-export class Unit extends BaseEntity{
+export class Unit extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number
 
     @Column()
     name: string
 
-    @Column({nullable:true})
+    @Column({nullable: true})
     parent: number;
+
+    @ManyToMany(type => User, {cascade: true})
+    @JoinTable({
+        name: 'units_users',
+        joinColumn: {name: 'unit_id', referencedColumnName: 'id'},
+        inverseJoinColumn: {name: 'user_id', referencedColumnName: 'id'}
+    })
+    users: User[]
+
 }
