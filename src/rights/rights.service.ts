@@ -5,7 +5,6 @@ import {Rights} from "./rights.entity";
 import {CreateRightsDto} from "./dto/create-rights.dto";
 import {RightsList} from "./utils/rights.list";
 import {UserRepository} from "../users/repositories/user.repository";
-import {User} from "../users/user.entity";
 
 @Injectable()
 export class RightsService {
@@ -40,10 +39,10 @@ export class RightsService {
                     admin.rights.push(rights);
                 }
             ).then(() => {
-                admin.save();
-                console.log(admin); 
+                if (admin.rights.length === allRights.length) {
+                    admin.save();
+                }
             })
-
         });
 
 

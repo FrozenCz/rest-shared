@@ -1,8 +1,8 @@
-import {IsInt, IsNumber, IsOptional} from "class-validator";
+import {IsInt, IsOptional} from "class-validator";
 
 export class GetUnitsFilterDto {
 
-    @IsInt()
     @IsOptional()
+    @IsInt()
     parent: number;
 }

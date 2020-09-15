@@ -1,8 +1,9 @@
-import {BaseEntity, Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn} from "typeorm";
+import {BaseEntity, Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, Unique} from "typeorm";
 import {User} from "../users/user.entity";
 
 
 @Entity()
+@Unique(['name'])
 export class Unit extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number

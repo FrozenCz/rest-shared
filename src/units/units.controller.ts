@@ -36,8 +36,8 @@ export class UnitsController {
     @Post()
     @UseGuards(AuthGuard(), RightsGuard)
     @RightsAllowed(RightsTag.createUnits)
-    createUnit(@Body(ValidationPipe) createUnitDto: CreateUnitDto): Promise<Unit> {
-        return this.unitsService.createUnit(createUnitDto);
+    createUnit(@Body(ValidationPipe) createUnitDto: CreateUnitDto, @GetUser() user: User): Promise<Unit> {
+        return this.unitsService.createUnit(createUnitDto, user);
     }
 
     @Delete('/:id')
@@ -47,11 +47,16 @@ export class UnitsController {
         return this.unitsService.deleteUnit(id, user);
     }
 
-    @Post('/:idUnit/add_manager/:idUser')
+    @Post('/:idUnit/managers/:idUser')
     @UseGuards(AuthGuard(), RightsGuard)
-    // @RightsAllowed(RightsTag.addManagerToUnits)
+    @RightsAllowed(RightsTag.addManagerToUnits)
     addManager(@Param('idUnit', ParseIntPipe) idUnit: number, @Param('idUser', ParseIntPipe) idUser: number, @GetUser() user: User): Promise<void> {
         return this.unitsService.addManager(idUnit, idUser, user);
+    }
+
+    @Delete('/:idUnit/managers/:idUser')
+    removeManager(@Param('idUnit', ParseIntPipe) idUnit: number, @Param('idUser', ParseIntPipe) idUser: number, @GetUser() user: User): Promise<void> {
+        return this.unitsService.removeManager(idUnit, idUser, user);
     }
 
 

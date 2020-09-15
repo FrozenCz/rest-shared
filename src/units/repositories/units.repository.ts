@@ -7,10 +7,16 @@ import {GetUnitsFilterDto} from "../dto/get-units-filter.dto";
 export class UnitsRepository extends Repository<Unit> {
 
     async getUnits(getUnitsFilterDto?: GetUnitsFilterDto): Promise<Unit[]> {
-        const { parent } = getUnitsFilterDto;
-        const query = await this.createQueryBuilder('unit');
+        let parent;
 
-        if(parent) {
+        if (getUnitsFilterDto) {
+            parent = getUnitsFilterDto.parent;
+        }
+
+        const query = await this.createQueryBuilder('unit');
+        query.leftJoinAndSelect('unit.users', 'users')
+
+        if (parent) {
             query.where('parent = :parent', {parent});
         }
 

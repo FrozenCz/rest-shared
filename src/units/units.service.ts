@@ -1,4 +1,4 @@
-import {Injectable, NotFoundException, Query, ValidationPipe} from "@nestjs/common";
+import {ForbiddenException, Injectable, NotFoundException, Query, ValidationPipe} from "@nestjs/common";
 import {CreateUnitDto} from "./dto/create-unit.dto";
 import {Unit} from "./unit.entity";
 import {UnitsRepository} from "./repositories/units.repository";
@@ -34,7 +34,7 @@ export class UnitsService {
      * @param createUnitDto
      * @return unit
      */
-    async createUnit(createUnitDto: CreateUnitDto): Promise<Unit> {
+    async createUnit(createUnitDto: CreateUnitDto, user: User): Promise<Unit> {
         if (createUnitDto.parent) {
             const found = await this.unitsRepository.findOne({id: createUnitDto.parent});
 
@@ -43,7 +43,11 @@ export class UnitsService {
             }
         }
 
-        const unit = this.unitsRepository.create({name: createUnitDto.name, parent:createUnitDto.parent});
+        const unit = this.unitsRepository.create({name: createUnitDto.name, parent:createUnitDto.parent, users: []});
+
+        if (unit.parent === undefined) {
+        unit.users.push(user);
+        }
 
         await unit.save();
         return unit;
@@ -64,6 +68,7 @@ export class UnitsService {
      */
     async isManagerInTree(unitId: number, user: User): Promise<boolean> {
         const units = await this.unitsRepository.getUnits();
+        console.log(units);
 
         if (units.length === 0) {
             return true;
@@ -76,7 +81,8 @@ export class UnitsService {
     }
 
     private recursiveSearch(units: Unit[], currentUnit: Unit, user: User): boolean {
-        const found = currentUnit.users.find(found => found === user);
+        console.log(currentUnit);
+        const found = currentUnit.users.find(unitUser => unitUser === user);
         /**
          * nalezen
          */
@@ -96,16 +102,18 @@ export class UnitsService {
         const isInTree = this.isManagerInTree(idUnit, user);
 
         if(!isInTree) {
-
+            throw new ForbiddenException('You are not able to add manager for this unit');
         }
 
         //TODO: nemel by uzivatel dostat i prava?
         const unit = this.getUnitById(idUnit);
         const userToAdd = this.usersService.getUserById(idUser);
 
-
         return ;
     }
 
 
+    removeManager(idUnit: number, idUser: number, user: User) {
+        return Promise.resolve(undefined);
+    }
 }

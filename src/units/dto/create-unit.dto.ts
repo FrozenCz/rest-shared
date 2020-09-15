@@ -1,6 +1,5 @@
-import {IsInt, IsOptional, IsString} from "class-validator";
+import {IsInt, IsNotEmpty, IsOptional, IsString} from "class-validator";
 import {Transform} from "class-transformer";
-import {User} from "../../users/user.entity";
 
 
 export class CreateUnitDto {
@@ -8,9 +7,10 @@ export class CreateUnitDto {
     @IsString()
     name: string;
 
-    @IsInt()
-    @Transform(value => Number(value))
     @IsOptional()
+    @IsNotEmpty()
+    @Transform(value => Number(value))
+    @IsInt()
     parent: number;
 
 }
