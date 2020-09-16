@@ -55,10 +55,11 @@ export class UnitsController {
     }
 
     @Delete('/:idUnit/managers/:idUser')
+    @UseGuards(AuthGuard(), RightsGuard)
+    @RightsAllowed(RightsTag.removeManagerFromUnits)
     removeManager(@Param('idUnit', ParseIntPipe) idUnit: number, @Param('idUser', ParseIntPipe) idUser: number, @GetUser() user: User): Promise<void> {
         return this.unitsService.removeManager(idUnit, idUser, user);
     }
-
 
 
 }

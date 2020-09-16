@@ -1,8 +1,20 @@
-import {BaseEntity, Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, Unique} from "typeorm";
+import {
+    BaseEntity,
+    Column,
+    Entity,
+    JoinTable,
+    ManyToMany, ManyToOne, OneToMany,
+    PrimaryGeneratedColumn,
+    Tree,
+    TreeChildren, TreeParent,
+    Unique
+} from "typeorm";
 import {User} from "../users/user.entity";
 
 
+
 @Entity()
+@Tree('adjacency-list')
 @Unique(['name'])
 export class Unit extends BaseEntity {
     @PrimaryGeneratedColumn()
@@ -11,8 +23,11 @@ export class Unit extends BaseEntity {
     @Column()
     name: string
 
-    @Column({nullable: true})
-    parent: number;
+    @ManyToOne(type => Unit, unit => unit.children)
+    parent: Unit
+
+    @OneToMany(type => Unit, unit => unit.parent)
+    children: Unit[]
 
     @ManyToMany(type => User, {cascade: true})
     @JoinTable({
