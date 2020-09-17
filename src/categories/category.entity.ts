@@ -17,7 +17,7 @@ export class Category extends BaseEntity{
     @Column({nullable: true})
     code: string
 
-    @TreeChildren()
+    @TreeChildren({cascade: true})
     children: Unit[];
 
     @TreeParent()

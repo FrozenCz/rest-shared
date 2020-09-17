@@ -9,6 +9,8 @@ export enum RightsCategory {
 
 export enum RightsTag {
     createCategory = 'createCategory',
+    deleteCategory = 'deleteCategory',
+    updateCategory = 'updateCategory',
 
     getUser = 'getUser',
     createUser = 'createUser',
@@ -29,6 +31,8 @@ export enum RightsTag {
 
 export const RightsList: CreateRightsDto[] = [
     { relatedTo: RightsCategory.categories, tag: RightsTag.createCategory, name:'Tvorba kategorií majetku' },
+    { relatedTo: RightsCategory.categories, tag: RightsTag.deleteCategory, name:'Mazání kategorií majetku' },
+    { relatedTo: RightsCategory.categories, tag: RightsTag.updateCategory, name:'Mazání kategorií majetku' },
 
     { relatedTo: RightsCategory.users, tag: RightsTag.getUser, name:'zobrazení uživatele' },
     { relatedTo: RightsCategory.users, tag: RightsTag.createUser, name:'tvorba uživatele' },
