@@ -8,7 +8,7 @@ import {GetUsersFilterDto} from "./dto/get-users-filter.dto";
 import {UsersService} from "./users.service";
 import {RightsGuard} from "../guards/rights.guard";
 import {UpdateUserDto} from "./dto/update-user.dto";
-import {RightsTag} from "../rights/utils/rights.list";
+import {RightsTag} from "../rights/config/rights.list";
 
 
 @Controller('users')

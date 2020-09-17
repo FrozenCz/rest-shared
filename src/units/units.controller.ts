@@ -17,7 +17,7 @@ import {GetUnitsFilterDto} from "./dto/get-units-filter.dto";
 import {AuthGuard} from '@nestjs/passport';
 import {RightsGuard} from '../guards/rights.guard';
 import {RightsAllowed} from '../guards/rights-allowed.decorator';
-import {RightsTag} from '../rights/utils/rights.list';
+import {RightsTag} from '../rights/config/rights.list';
 import {GetUser} from '../users/utils/get-user.decorator';
 import {User} from '../users/user.entity';
 

@@ -1,10 +1,12 @@
-import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {BaseEntity, Column, Entity, PrimaryGeneratedColumn, Tree, TreeChildren, TreeParent,} from "typeorm";
+import {Unit} from "../units/unit.entity";
 
 /**
  * entity reprezentujici kategorie ve kterych je zarazen majetek
  */
 @Entity()
-export class Category {
+@Tree('closure-table')
+export class Category extends BaseEntity{
 
     @PrimaryGeneratedColumn()
     id: number
@@ -15,6 +17,11 @@ export class Category {
     @Column({nullable: true})
     code: string
 
-    @Column({nullable: true})
-    parent: number
+    @TreeChildren()
+    children: Unit[];
+
+    @TreeParent()
+    parent: Unit;
+
+    //TODO: OneToMany()..... na majetek
 }

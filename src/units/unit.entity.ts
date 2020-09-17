@@ -14,20 +14,20 @@ import {User} from "../users/user.entity";
 
 
 @Entity()
-@Tree('adjacency-list')
+@Tree('closure-table')
 @Unique(['name'])
-export class Unit extends BaseEntity {
+export class Unit extends BaseEntity{
     @PrimaryGeneratedColumn()
     id: number
 
     @Column()
     name: string
 
-    @ManyToOne(type => Unit, unit => unit.children)
-    parent: Unit
+    @TreeChildren()
+    children: Unit[];
 
-    @OneToMany(type => Unit, unit => unit.parent)
-    children: Unit[]
+    @TreeParent()
+    parent: Unit;
 
     @ManyToMany(type => User, {cascade: true})
     @JoinTable({

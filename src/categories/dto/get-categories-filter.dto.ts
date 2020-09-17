@@ -1,12 +1,12 @@
-import {IsBoolean, IsInt, IsNotEmpty, IsOptional} from "class-validator";
+import {IsInt, IsNotEmpty, IsOptional} from "class-validator";
 import {Transform} from "class-transformer";
 
-export class GetUnitsFilterDto {
+
+export class GetCategoriesFilterDto {
 
     @IsOptional()
     @IsNotEmpty()
     @Transform(value => Number(value))
     @IsInt()
     parent: number;
-
 }

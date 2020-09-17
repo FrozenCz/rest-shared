@@ -1,4 +1,4 @@
-import {EntityRepository, Repository, TreeRepository} from "typeorm";
+import {EntityRepository, getManager, Repository, TreeRepository} from "typeorm";
 import {Unit} from "../unit.entity";
 import {GetUnitsFilterDto} from "../dto/get-units-filter.dto";
 import {NotFoundException} from "@nestjs/common";
@@ -6,7 +6,15 @@ import {async} from "rxjs/internal/scheduler/async";
 
 
 @EntityRepository(Unit)
-export class UnitsRepository extends Repository<Unit> {
+export class UnitsRepository extends TreeRepository<Unit> {
+
+    async getUnitById(id: number): Promise<Unit> {
+        const found = this.findOne(id);
+        if (!found) {
+            throw new NotFoundException(`Unit with ID ${id} not found! `);
+        }
+        return found;
+    }
 
     async getUnitByIdWithUsers(idUnit: number): Promise<Unit> {
         const query = await this.createQueryBuilder('unit');
@@ -20,36 +28,22 @@ export class UnitsRepository extends Repository<Unit> {
         return found;
     }
 
-    async getUnits(getUnitsFilterDto?: GetUnitsFilterDto, withUsers?: boolean): Promise<Unit[]> {
+    async getUnits(getUnitsFilterDto?: GetUnitsFilterDto): Promise<Unit[]> {
         let parent;
-        const nestedUnits = [];
+        let units;
 
         if (getUnitsFilterDto) {
             parent = getUnitsFilterDto.parent;
         }
 
-        const query = await this.createQueryBuilder('unit');
-
-        if (withUsers) {
-            query.leftJoinAndSelect('unit.users', 'users')
-        }
-
         if (parent) {
-            query.where('parent.id = :parent', {parent: parent.id});
+            const ancestor = await this.getUnitById(parent);
+            units = await this.findDescendantsTree(ancestor)
+        } else {
+            units = await this.findTrees();
         }
 
-        const units = await query.getMany();
-        if (withUsers) {
-            if (units.some(u => u.users === undefined)) {
-                units.find(u => u.users === undefined).users = [];
-            }
-        }
-        nestedUnits.push(units);
-
-
-        console.log(nestedUnits);
-
-        return nestedUnits;
+        return units;
     }
 
 }

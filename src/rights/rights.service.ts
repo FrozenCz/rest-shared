@@ -3,7 +3,7 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {RightsRepository} from "./repositories/rights.repository";
 import {Rights} from "./rights.entity";
 import {CreateRightsDto} from "./dto/create-rights.dto";
-import {RightsList} from "./utils/rights.list";
+import {RightsList} from "./config/rights.list";
 import {UserRepository} from "../users/repositories/user.repository";
 
 @Injectable()

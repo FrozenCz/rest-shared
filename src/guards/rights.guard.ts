@@ -1,6 +1,6 @@
 import {CanActivate, ExecutionContext, Injectable} from "@nestjs/common";
 import {Reflector} from "@nestjs/core";
-import {RightsTag} from "../rights/utils/rights.list";
+import {RightsTag} from "../rights/config/rights.list";
 
 /**
  * guard kontrolujici zda uzivatel ma prava k akci

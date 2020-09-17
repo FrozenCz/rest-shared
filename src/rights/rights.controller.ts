@@ -5,7 +5,7 @@ import {CreateRightsDto} from "./dto/create-rights.dto";
 import {Rights} from "./rights.entity";
 import {RightsAllowed} from "../guards/rights-allowed.decorator";
 import {RightsGuard} from "../guards/rights.guard";
-import {RightsTag} from "./utils/rights.list";
+import {RightsTag} from "./config/rights.list";
 
 @Controller('rights')
 export class RightsController {

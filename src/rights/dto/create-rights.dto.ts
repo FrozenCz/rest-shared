@@ -1,5 +1,5 @@
 import {IsEnum, IsOptional, IsString} from "class-validator";
-import {RightsCategory, RightsTag} from "../utils/rights.list";
+import {RightsCategory, RightsTag} from "../config/rights.list";
 
 
 

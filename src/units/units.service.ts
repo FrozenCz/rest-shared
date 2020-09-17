@@ -13,7 +13,7 @@ export class UnitsService {
     }
 
     async getUnits(getUnitsFilterDto: GetUnitsFilterDto): Promise<Unit[]> {
-        return this.unitsRepository.getUnits(getUnitsFilterDto, true);
+        return this.unitsRepository.getUnits(getUnitsFilterDto);
     }
 
     async getUnitById(id: number, withUsers?: boolean) {
@@ -96,7 +96,7 @@ export class UnitsService {
      * @return Promise<boolean>
      */
     async isManagerInTree(unitId: number, user: User): Promise<boolean> {
-        const units = await this.unitsRepository.getUnits(undefined, true);
+        const units = await this.unitsRepository.getUnits();
 
         if (units.length === 0) {
             return true;

@@ -1,5 +1,5 @@
 import {BaseEntity, Column, Entity, IsNull, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
-import {RightsCategory, RightsTag} from "./utils/rights.list";
+import {RightsCategory, RightsTag} from "./config/rights.list";
 
 
 @Entity()

@@ -1,10 +1,15 @@
 import {CreateRightsDto} from "../dto/create-rights.dto";
 
 export enum RightsCategory {
-    users = 'users', rights = 'rights', units = 'units'
+    categories = 'categories',
+    rights = 'rights',
+    units = 'units',
+    users = 'users'
 }
 
 export enum RightsTag {
+    createCategory = 'createCategory',
+
     getUser = 'getUser',
     createUser = 'createUser',
     deleteUser = 'deleteUser',
@@ -18,9 +23,13 @@ export enum RightsTag {
     removeManagerFromUnits = 'removeManagerFromUnits',
 
 
+
+
 }
 
 export const RightsList: CreateRightsDto[] = [
+    { relatedTo: RightsCategory.categories, tag: RightsTag.createCategory, name:'Tvorba kategorií majetku' },
+
     { relatedTo: RightsCategory.users, tag: RightsTag.getUser, name:'zobrazení uživatele' },
     { relatedTo: RightsCategory.users, tag: RightsTag.createUser, name:'tvorba uživatele' },
     { relatedTo: RightsCategory.users, tag: RightsTag.deleteUser, name:'smazání uživatele' },
