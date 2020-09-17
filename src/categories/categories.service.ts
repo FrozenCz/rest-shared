@@ -80,7 +80,6 @@ export class CategoriesService {
         const tree = await query.delete()
             .from('category_closure')
             .where('id_ancestor IN (:...ids)', {ids: children.map(ch => ch.id)})
-        // .orWhere('id_descendant = :id', {id})
         .execute()
 
         const deleted = await this.categoriesRepository.remove(children.reverse());
