@@ -84,9 +84,28 @@ export class UnitsService {
     async deleteUnit(id: number, user: User): Promise<void> {
         //TODO: jednotka by nemela jit smazat pokud obsahuje nejake uzivatele, resp majetek
         const isInTree = this.isManagerInTree(id, user);
-        console.log(isInTree);
 
-        return
+        if ( !isInTree ) {
+            throw new ForbiddenException('You are not able to do that!');
+        }
+
+        const unit = await this.getUnitById(id);
+
+        const children = await this.unitsRepository.findDescendants(unit);
+
+        /**
+         * prvne musim odstranit zavislosti
+         */
+        const query = await this.unitsRepository.createDescendantsQueryBuilder('unit', 'unitClosure', unit);
+
+        await query.delete()
+            .from('unit_closure')
+            .where('id_ancestor IN (:...ids)', {ids: children.map(ch => ch.id)})
+            .execute()
+
+        await this.unitsRepository.remove(children.reverse());
+
+        return;
     }
 
     /**

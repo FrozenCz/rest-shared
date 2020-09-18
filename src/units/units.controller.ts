@@ -42,7 +42,7 @@ export class UnitsController {
 
     @Delete('/:id')
     @UseGuards(AuthGuard(), RightsGuard)
-    // @RightsAllowed(RightsTag.deleteUnits)
+    @RightsAllowed(RightsTag.deleteUnits)
     deleteUnit(@Param('id', ParseIntPipe) id: number, @GetUser() user: User): Promise<void> {
         return this.unitsService.deleteUnit(id, user);
     }

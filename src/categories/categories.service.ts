@@ -59,39 +59,30 @@ export class CategoriesService {
         return newCat;
     }
 
+    /**
+     * smazani kategorie a veskerych kategorii pod ni
+     * @param id
+     */
     async deleteCategory(id: number): Promise<void> {
         const category = await this.getCategoryById(id);
         //TODO: kontrola zda v této kategorii není žádný majetek, jinak není možné jí smazat
 
         const children = await this.categoriesRepository.findDescendants(category);
-        // const tree = await this.categoriesRepository.remove(children);
-        // const tree = await this.categoriesRepository.delete({id: id || parent: id});
-
 
         /**
          * prvne musim odstranit zavislosti
          */
         const query = await this.categoriesRepository.createDescendantsQueryBuilder('category', 'categoryClosure', category);
-        console.log(await query.getMany());
-        console.log(children.reverse());
 
-        console.log(children.map(ch => ch.id));
-
-        const tree = await query.delete()
+        await query.delete()
             .from('category_closure')
             .where('id_ancestor IN (:...ids)', {ids: children.map(ch => ch.id)})
         .execute()
 
-        const deleted = await this.categoriesRepository.remove(children.reverse());
+        await this.categoriesRepository.remove(children.reverse());
 
-        console.log(deleted);
-
-        // const children = await this.categoriesRepository.find({parent: category});
-        // console.log(tree);
-        // const deleted = await this.categoriesRepository.delete(id);
-
-        // console.log(deleted);
         return;
-
     }
+
+    //TODO: moveCategory?
 }
