@@ -8,6 +8,7 @@ import {RightsModule} from "./rights/rights.module";
 import {UsersModule} from "./users/users.module";
 import {UnitsModule} from "./units/units.module";
 import {CategoriesModule} from "./categories/categories.module";
+import {LocationsModule} from "./locations/locations.module";
 
 
 @Module({
@@ -15,6 +16,7 @@ import {CategoriesModule} from "./categories/categories.module";
         TypeOrmModule.forRoot(typeOrmConfig),
         AuthModule,
         CategoriesModule,
+        LocationsModule,
         RightsModule,
         UnitsModule,
         UsersModule],
