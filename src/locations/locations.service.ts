@@ -22,18 +22,42 @@ export class LocationsService {
         return this.locationsRepository.findTrees();
     }
 
-    createLocation(createLocationDto: CreateLocationDto) {
+    /**
+     * vytvori lokaci
+     * @param createLocationDto
+     */
+   async createLocation(createLocationDto: CreateLocationDto): Promise<Location> {
         let parent;
         const { name } = createLocationDto;
 
         if( createLocationDto.parent ) {
-
+            parent = await this.getLocationById(createLocationDto.parent);
         }
-
 
         const location = new Location();
         location.name = name;
         location.parent = parent;
+        return await location.save();
+    }
 
+
+    async deleteLocation(id: number): Promise<void> {
+       const location = await this.getLocationById(id);
+       // todo: kontrola zda lokace nejsou obsazene v nejakych majetkach? i ty pod?
+
+        const children = await this.locationsRepository.findDescendants(location);
+        /**
+         * prvne musim odstranit zavislosti
+         */
+        const query = await this.locationsRepository.createDescendantsQueryBuilder('location', 'locationClosure', location);
+
+        await query.delete()
+            .from('location_closure')
+            .where('id_ancestor IN (:...ids)', {ids: children.map(ch => ch.id)})
+            .execute()
+
+        await this.locationsRepository.remove(children.reverse());
+
+        return;
     }
 }
