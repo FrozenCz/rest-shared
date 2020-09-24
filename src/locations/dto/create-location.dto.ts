@@ -1,5 +1,7 @@
 import {IsInt, IsNotEmpty, IsOptional, IsString} from "class-validator";
 import {Transform} from "class-transformer";
+import {ManyToOne} from 'typeorm';
+import {Unit} from '../../units/unit.entity';
 
 
 export class CreateLocationDto {
@@ -7,6 +9,12 @@ export class CreateLocationDto {
     @IsString()
     @IsNotEmpty()
     name: string
+
+    @IsNotEmpty()
+    @Transform(value => Number(value))
+    @IsInt()
+    unit: number
+
 
     @IsOptional()
     @IsNotEmpty()

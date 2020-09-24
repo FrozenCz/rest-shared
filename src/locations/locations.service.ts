@@ -1,13 +1,15 @@
-import {Injectable, NotFoundException} from "@nestjs/common";
+import {ForbiddenException, Injectable, NotFoundException} from "@nestjs/common";
 import {LocationsRepository} from "./repositories/locations.repository";
 import {Location} from "./location.entity";
 import {CreateLocationDto} from "./dto/create-location.dto";
+import {UnitsService} from '../units/units.service';
+import {User} from '../users/user.entity';
 
 
 @Injectable()
 export class LocationsService {
 
-    constructor(private readonly locationsRepository: LocationsRepository) {
+    constructor(private readonly locationsRepository: LocationsRepository, private readonly unitsService: UnitsService) {
     }
 
     async getLocationById(id: number): Promise<Location> {
@@ -26,24 +28,30 @@ export class LocationsService {
      * vytvori lokaci
      * @param createLocationDto
      */
-   async createLocation(createLocationDto: CreateLocationDto): Promise<Location> {
-        let parent;
-        const { name } = createLocationDto;
+    async createLocation(createLocationDto: CreateLocationDto, user: User): Promise<Location> {
+        let parentUnit;
+        const {name, parent, unit} = createLocationDto || {};
+        const unitFound = this.unitsService.getUnitById(unit);
 
-        if( createLocationDto.parent ) {
-            parent = await this.getLocationById(createLocationDto.parent);
+        if (!unitFound) {
+            throw new NotFoundException(`Unit with ID "${unit}" not found! `);
+        }
+
+
+        if (parent) {
+            parentUnit = await this.getLocationById(createLocationDto.parent);
         }
 
         const location = new Location();
         location.name = name;
-        location.parent = parent;
+        location.parent = parentUnit;
         return await location.save();
     }
 
 
     async deleteLocation(id: number): Promise<void> {
-       const location = await this.getLocationById(id);
-       // todo: kontrola zda lokace nejsou obsazene v nejakych majetkach? i ty pod?
+        const location = await this.getLocationById(id);
+        // todo: kontrola zda lokace nejsou obsazene v nejakych majetkach? i ty pod?
 
         const children = await this.locationsRepository.findDescendants(location);
         /**

@@ -10,6 +10,7 @@ import {
     TreeParent
 } from "typeorm";
 import {Assets} from "../assets/assets.entity";
+import {Unit} from '../units/unit.entity';
 
 
 @Entity()
@@ -30,5 +31,9 @@ export class Location extends BaseEntity {
 
     @OneToMany(type => Assets, assets => assets.id)
     assets: Assets[]
+
+    @ManyToOne(type => Unit, unit => unit.id)
+    unit: Unit
+
 
 }
