@@ -1,15 +1,19 @@
-import {ForbiddenException, Injectable, NotFoundException} from "@nestjs/common";
+import {Injectable, NotFoundException} from "@nestjs/common";
 import {LocationsRepository} from "./repositories/locations.repository";
 import {Location} from "./location.entity";
 import {CreateLocationDto} from "./dto/create-location.dto";
 import {UnitsService} from '../units/units.service';
 import {User} from '../users/user.entity';
+import {InjectRepository} from '@nestjs/typeorm';
 
 
 @Injectable()
 export class LocationsService {
 
-    constructor(private readonly locationsRepository: LocationsRepository, private readonly unitsService: UnitsService) {
+    constructor(
+        @InjectRepository(LocationsRepository)
+        private locationsRepository: LocationsRepository,
+        private readonly unitsService: UnitsService) {
     }
 
     async getLocationById(id: number): Promise<Location> {
@@ -29,7 +33,7 @@ export class LocationsService {
      * @param createLocationDto
      */
     async createLocation(createLocationDto: CreateLocationDto, user: User): Promise<Location> {
-        let parentUnit;
+        let parentLocation;
         const {name, parent, unit} = createLocationDto || {};
         const unitFound = this.unitsService.getUnitById(unit);
 
@@ -37,17 +41,15 @@ export class LocationsService {
             throw new NotFoundException(`Unit with ID "${unit}" not found! `);
         }
 
-
         if (parent) {
-            parentUnit = await this.getLocationById(createLocationDto.parent);
+            parentLocation = await this.getLocationById(createLocationDto.parent);
         }
 
         const location = new Location();
         location.name = name;
-        location.parent = parentUnit;
+        location.parent = parentLocation;
         return await location.save();
     }
-
 
     async deleteLocation(id: number): Promise<void> {
         const location = await this.getLocationById(id);

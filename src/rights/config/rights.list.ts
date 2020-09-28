@@ -29,15 +29,12 @@ export enum RightsTag {
     addManagerToUnits = 'addManagerToUnits',
     removeManagerFromUnits = 'removeManagerFromUnits',
 
-
-
-
 }
 
 export const RightsList: CreateRightsDto[] = [
     { relatedTo: RightsCategory.categories, tag: RightsTag.createCategory, name:'Tvorba kategorií majetku' },
     { relatedTo: RightsCategory.categories, tag: RightsTag.deleteCategory, name:'Mazání kategorií majetku' },
-    { relatedTo: RightsCategory.categories, tag: RightsTag.updateCategory, name:'Mazání kategorií majetku' },
+    { relatedTo: RightsCategory.categories, tag: RightsTag.updateCategory, name:'Úprava kategorií majetku' },
 
     { relatedTo: RightsCategory.locations, tag: RightsTag.createLocation, name:'Tvorba lokací' },
     { relatedTo: RightsCategory.locations, tag: RightsTag.deleteLocation, name:'Úprava lokací' },

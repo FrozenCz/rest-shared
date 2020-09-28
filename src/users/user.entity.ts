@@ -1,6 +1,17 @@
-import {BaseEntity, Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, Unique} from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Unique
+} from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import {Rights} from "../rights/rights.entity";
+import {Unit} from '../units/unit.entity';
 
 @Entity()
 @Unique(['username'])
@@ -32,8 +43,8 @@ export class User extends BaseEntity{
   })
   rights: Rights[];
 
-  @Column('int', {nullable: true})
-  idAssetManager: number;
+  @ManyToOne(type => Unit, unit => unit.id, {eager: true, cascade:false})
+  unit: Unit;
 
   async validatePassword(password: string): Promise<boolean> {
     const hash = await bcrypt.hash(password, this.salt);

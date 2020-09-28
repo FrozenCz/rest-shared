@@ -3,6 +3,7 @@
  */
 import {IsNumber, IsOptional, IsString, Matches, MaxLength, MinLength} from "class-validator";
 import {AuthCredentialsDto} from "../../auth/dto/auth-credentials.dto";
+import {Unit} from '../../units/unit.entity';
 
 export class CreateUserDto extends AuthCredentialsDto{
 
@@ -18,5 +19,5 @@ export class CreateUserDto extends AuthCredentialsDto{
 
   @IsOptional()
   @IsNumber()
-  idAssetManager?: number;
+  unit?: number | Unit;
 }

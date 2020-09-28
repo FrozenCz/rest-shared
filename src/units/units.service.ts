@@ -177,6 +177,12 @@ export class UnitsService {
         return
     }
 
+    async getMasterUnit(unit: Unit): Promise<Unit> {
+        console.log(await this.unitsRepository.findAncestors(unit));
+        // return await this.unitsRepository.findAncestors(unit);
+        return ;
+    }
+
     private async recursiveSearch(units: Unit[], currentUnit: Unit, user: User): Promise<boolean> {
         if(user.id === 1) return true; // pokud se jedná o administrátora
         const found = await currentUnit.users.find(unitUser => unitUser.id === user.id);

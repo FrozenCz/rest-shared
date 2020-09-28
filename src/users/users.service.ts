@@ -24,7 +24,17 @@ export class UsersService {
     }
 
     async createUser(createUserDto: CreateUserDto): Promise<void>{
-        return await this.userRepository.createUser(createUserDto);
+        const {name, surname, password, username, unit} = createUserDto;
+
+        const user = new User();
+        user.username = username;
+        user.name = name;
+        user.surname = surname;
+        user.password = password; // still plain text
+
+        //todo: unit check!!!!
+
+        return await this.userRepository.createUser(user);
     }
 
 
@@ -55,7 +65,7 @@ export class UsersService {
 
     private async assetHierarchyCheck(whoWants: User, whichOne: User): Promise<boolean> {
         // pokud se jedná o stejného uživatele, nebo pokud je uživatel pod stejným assetManagerem
-        if (whoWants.idAssetManager === whichOne.idAssetManager) return true;
+        // if (whoWants.idAssetManager === whichOne.idAssetManager) return true;
 
         //nebo pokud je hierarchicky ve stromě
         //TODO: dodělat tuto fci až budou hotové kategorie, bude potřeba ještě udělat rekurzivní funkci pro zjistění stromu

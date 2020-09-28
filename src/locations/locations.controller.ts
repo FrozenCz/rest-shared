@@ -6,6 +6,8 @@ import {AuthGuard} from '@nestjs/passport';
 import {RightsGuard} from '../guards/rights.guard';
 import {RightsAllowed} from '../guards/rights-allowed.decorator';
 import {RightsTag} from '../rights/config/rights.list';
+import {GetUser} from '../users/utils/get-user.decorator';
+import {User} from '../users/user.entity';
 
 
 @Controller('/locations')
@@ -22,8 +24,8 @@ export class LocationsController {
     @Post()
     @UseGuards(AuthGuard(), RightsGuard)
     @RightsAllowed(RightsTag.createLocation)
-    createLocation(@Body(ValidationPipe) createLocationDto: CreateLocationDto): Promise<Location> {
-        return this.locationsService.createLocation(createLocationDto);
+    createLocation(@GetUser() user: User, @Body(ValidationPipe) createLocationDto: CreateLocationDto): Promise<Location> {
+        return this.locationsService.createLocation(createLocationDto, user);
     }
 
     @Delete('/:id')
