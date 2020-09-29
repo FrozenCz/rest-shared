@@ -35,6 +35,18 @@ export class UnitsService {
         return found;
     }
 
+    async findUnitBelowMasterUnit(id: number, user: User): Promise<Unit> {
+        const unit = await this.getUnitById(id);
+        return ;
+    }
+
+    async findMasterUnit(id: number): Promise<Unit> {
+        const unit = await this.getUnitById(id);
+        const roots = await this.unitsRepository.findAncestors(unit);
+         console.log(roots.reverse());
+        return ;
+    }
+
     /** vytvorit jednotku, pokud je zaslan i @parent tak se kontroluje zda existuje
      * @param createUnitDto
      * @return unit
@@ -177,11 +189,11 @@ export class UnitsService {
         return
     }
 
-    async getMasterUnit(unit: Unit): Promise<Unit> {
-        console.log(await this.unitsRepository.findAncestors(unit));
-        // return await this.unitsRepository.findAncestors(unit);
-        return ;
-    }
+    // async getMasterUnit(unit: Unit): Promise<Unit> {
+    //     console.log(await this.unitsRepository.findAncestors(unit));
+    //     // return await this.unitsRepository.findAncestors(unit);
+    //     return ;
+    // }
 
     private async recursiveSearch(units: Unit[], currentUnit: Unit, user: User): Promise<boolean> {
         if(user.id === 1) return true; // pokud se jedná o administrátora
