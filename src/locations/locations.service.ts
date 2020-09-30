@@ -1,4 +1,4 @@
-import {Injectable, NotFoundException} from "@nestjs/common";
+import {ForbiddenException, Injectable, NotFoundException} from "@nestjs/common";
 import {LocationsRepository} from "./repositories/locations.repository";
 import {Location} from "./location.entity";
 import {CreateLocationDto} from "./dto/create-location.dto";
@@ -24,50 +24,49 @@ export class LocationsService {
         return found;
     }
 
-    async getLocations(): Promise<Location[]> {
-        return this.locationsRepository.findTrees();
+    async listLocations(): Promise<Location[]> {
+        return this.locationsRepository.listLocations();
     }
 
     /**
      * vytvori lokaci
      * @param createLocationDto
+     * @param user
      */
     async createLocation(createLocationDto: CreateLocationDto, user: User): Promise<Location> {
         let parentLocation;
-        const {name, parent, unit} = createLocationDto || {};
-        const unitFound = this.unitsService.getUnitById(unit);
-
-        if (!unitFound) {
-            throw new NotFoundException(`Unit with ID "${unit}" not found! `);
-        }
+        let userScopeMasterUnit;
+        const {name, parent = null, masterUnit = null} = createLocationDto || {};
 
         if (parent) {
-            parentLocation = await this.getLocationById(createLocationDto.parent);
+            parentLocation = await this.getLocationById(parent);
+            if (!parentLocation) {
+                throw new NotFoundException(`Location with ID "${parent}" not found! `);
+            }
+        }
+
+        if (user?.unit?.id) {
+            userScopeMasterUnit = await this.unitsService.getMasterUnit(user.unit.id);
+            const unitScopeMasterUnit = await this.unitsService.getMasterUnit(parentLocation.masterUnit);
+
+            if (userScopeMasterUnit !== unitScopeMasterUnit) {
+                throw new ForbiddenException(`You are not able to set unit under "${unitScopeMasterUnit}" master unit `);
+            }
+
+        } else {
+            userScopeMasterUnit = await this.unitsService.getMasterUnit(masterUnit);
         }
 
         const location = new Location();
         location.name = name;
         location.parent = parentLocation;
+        location.masterUnit = userScopeMasterUnit;
         return await location.save();
     }
 
     async deleteLocation(id: number): Promise<void> {
         const location = await this.getLocationById(id);
         // todo: kontrola zda lokace nejsou obsazene v nejakych majetkach? i ty pod?
-
-        const children = await this.locationsRepository.findDescendants(location);
-        /**
-         * prvne musim odstranit zavislosti
-         */
-        const query = await this.locationsRepository.createDescendantsQueryBuilder('location', 'locationClosure', location);
-
-        await query.delete()
-            .from('location_closure')
-            .where('id_ancestor IN (:...ids)', {ids: children.map(ch => ch.id)})
-            .execute()
-
-        await this.locationsRepository.remove(children.reverse());
-
-        return;
+        return this.locationsRepository.deleteLocation(location);
     }
 }

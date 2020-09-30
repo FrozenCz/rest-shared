@@ -20,7 +20,7 @@ export class UnitsService {
         let found;
 
         if (!withUsers) {
-            found = await this.unitsRepository.findOne(id);
+            found = await this.unitsRepository.findOne({id: id});
         } else {
             found = await this.unitsRepository.getUnitByIdWithUsers(id);
             if (found && found.users === undefined) {
@@ -35,30 +35,28 @@ export class UnitsService {
         return found;
     }
 
-    async findUnitBelowMasterUnit(id: number, user: User): Promise<Unit> {
-        const unit = await this.getUnitById(id);
-        return ;
-    }
+    /**
+     * fce pro hledani jednotky ktera je na nejvyssi urovni (ma parent null a je soucasti stromu)
+     * @param id
+     * @return unit
+     */
+    async getMasterUnit(id: number): Promise<Unit> {
 
-    async findMasterUnit(id: number): Promise<Unit> {
         const unit = await this.getUnitById(id);
         const roots = await this.unitsRepository.findAncestors(unit);
-         console.log(roots.reverse());
-        return ;
+
+        if (roots.length === 0) return unit;
+
+        return roots.shift();
     }
 
-    /** vytvorit jednotku, pokud je zaslan i @parent tak se kontroluje zda existuje
+    /**
+     * vytvorit jednotku, pokud je zaslan i @parent tak se kontroluje zda existuje
      * @param createUnitDto
      * @return unit
      */
     async createUnit(createUnitDto: CreateUnitDto, user: User): Promise<Unit> {
         let parent;
-        const nameExists = await this.unitsRepository.findOne({name: createUnitDto.name});
-
-        if (nameExists) {
-            throw new ConflictException(`Unit with "${createUnitDto.name}" already exists!`);
-        }
-
         if (createUnitDto.parent) {
             parent = await this.unitsRepository.findOne({id: createUnitDto.parent});
 
@@ -66,6 +64,14 @@ export class UnitsService {
                 throw new NotFoundException(`Parent with ID "${createUnitDto.parent}" not found! `);
             }
         }
+
+        const nameExists = await this.unitsRepository.findOne({name: createUnitDto.name});
+
+        if (nameExists) {
+            throw new ConflictException(`Unit with "${createUnitDto.name}" already exists!`);
+        }
+
+
 
         const unit = new Unit();
         unit.name = createUnitDto.name;
@@ -188,12 +194,6 @@ export class UnitsService {
 
         return
     }
-
-    // async getMasterUnit(unit: Unit): Promise<Unit> {
-    //     console.log(await this.unitsRepository.findAncestors(unit));
-    //     // return await this.unitsRepository.findAncestors(unit);
-    //     return ;
-    // }
 
     private async recursiveSearch(units: Unit[], currentUnit: Unit, user: User): Promise<boolean> {
         if(user.id === 1) return true; // pokud se jedná o administrátora

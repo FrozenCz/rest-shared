@@ -24,12 +24,12 @@ export class Unit extends BaseEntity{
     name: string
 
     @TreeChildren()
-    children: Unit[];
+    children: Unit[]
 
     @TreeParent()
-    parent: Unit;
+    parent: Unit
 
-    @ManyToMany(type => User, {cascade: true})
+    @ManyToMany(type => User, {cascade: false})
     @JoinTable({
         name: 'units_users',
         joinColumn: {name: 'unit_id', referencedColumnName: 'id'},

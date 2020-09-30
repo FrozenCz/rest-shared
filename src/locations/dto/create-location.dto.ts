@@ -1,4 +1,4 @@
-import {IsInt, IsNotEmpty, IsOptional, IsString} from "class-validator";
+import {IsIn, IsInt, IsNotEmpty, IsOptional, IsString} from "class-validator";
 import {Transform} from "class-transformer";
 
 export class CreateLocationDto {
@@ -7,17 +7,16 @@ export class CreateLocationDto {
     @IsNotEmpty()
     name: string
 
-    @IsNotEmpty()
-    @Transform(value => Number(value))
-    @IsInt()
-    unit: number
-
     @IsOptional()
     @IsNotEmpty()
     @Transform(value => Number(value))
     @IsInt()
     parent: number
 
-    //todo: zamyslet se nad tim zda locations sharovat mezi uzivateli ci nikoli?
+    @IsOptional()
+    @IsNotEmpty()
+    @Transform(value => Number(value))
+    @IsInt()
+    masterUnit: number
 
 }

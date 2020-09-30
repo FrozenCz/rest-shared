@@ -35,7 +35,7 @@ export class UnitsController {
 
     @Get('/:id/master_unit')
     getMasterUnit(@Param('id', ParseIntPipe) id: number): Promise<Unit> {
-        return this.unitsService.findMasterUnit(id);
+        return this.unitsService.getMasterUnit(id);
     }
 
     @Post()

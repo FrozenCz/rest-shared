@@ -1,7 +1,7 @@
 import {
     BaseEntity,
     Column,
-    Entity,
+    Entity, JoinTable,
     ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
@@ -32,8 +32,7 @@ export class Location extends BaseEntity {
     @OneToMany(type => Assets, assets => assets.id)
     assets: Assets[]
 
-    @ManyToOne(type => Unit, unit => unit.id)
-    unit: Unit
-
+    @ManyToOne(type => Unit, unit => unit.id, {eager: true})
+    masterUnit: Unit //unit without parent
 
 }

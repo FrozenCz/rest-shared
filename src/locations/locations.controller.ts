@@ -15,10 +15,9 @@ export class LocationsController {
     constructor(private locationsService: LocationsService) {
     }
 
-
     @Get()
     getLocations(): Promise<Location[]> {
-        return this.locationsService.getLocations();
+        return this.locationsService.listLocations();
     }
 
     @Post()
