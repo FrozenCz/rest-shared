@@ -11,6 +11,6 @@ export class CreateUnitDto {
     @IsNotEmpty()
     @Transform(value => Number(value))
     @IsInt()
-    parent: number;
+    parent?: number;
 
 }

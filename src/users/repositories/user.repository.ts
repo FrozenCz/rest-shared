@@ -48,8 +48,9 @@ export class UserRepository extends Repository<User> {
     }
 
     async getUsers(getUsersFilterDto: GetUsersFilterDto): Promise<User[]> {
-        const {idAssetManager} = getUsersFilterDto;
+        const {unit} = getUsersFilterDto || {};
         const query = this.createQueryBuilder('user');
+        // if (unit) query.where('user.unit = :unit', {unit}) // TODO: UDELAT OMEZENI NA JEDNOTKU
         const users = await query.getMany();
         return users;
     }

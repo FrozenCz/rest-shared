@@ -7,6 +7,6 @@ export class GetUnitsFilterDto {
     @IsNotEmpty()
     @Transform(value => Number(value))
     @IsInt()
-    parent: number;
+    parent?: number;
 
 }

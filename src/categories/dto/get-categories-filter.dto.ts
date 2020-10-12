@@ -8,5 +8,5 @@ export class GetCategoriesFilterDto {
     @IsNotEmpty()
     @Transform(value => Number(value))
     @IsInt()
-    parent: number;
+    parent?: number;
 }

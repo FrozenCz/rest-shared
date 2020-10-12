@@ -8,7 +8,7 @@ export class CreateCategoryDto {
 
     @IsOptional()
     @IsString()
-    code: string
+    code?: string
 
     @IsOptional()
     @IsNotEmpty()
