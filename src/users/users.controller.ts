@@ -9,6 +9,7 @@ import {UsersService} from "./users.service";
 import {RightsGuard} from "../guards/rights.guard";
 import {UpdateUserDto} from "./dto/update-user.dto";
 import {RightsTag} from "../rights/config/rights.list";
+import {ApiProperty} from '@nestjs/swagger';
 
 
 @Controller('users')

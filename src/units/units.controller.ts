@@ -30,7 +30,12 @@ export class UnitsController {
 
     @Get()
     listUnits(@Query(ValidationPipe) getUnitsFilterDto: GetUnitsFilterDto): Promise<Unit[]>{
-        return this.unitsService.getUnits(getUnitsFilterDto);
+        return this.unitsService.listUnits(getUnitsFilterDto);
+    }
+
+    @Get('/:id')
+    getUnit(@Param('id', ParseIntPipe) id: number): Promise<Unit> {
+        return this.unitsService.getUnitById(id, true);
     }
 
     @Get('/:id/master_unit')

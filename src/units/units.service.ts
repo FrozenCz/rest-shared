@@ -12,8 +12,8 @@ export class UnitsService {
     constructor(private unitsRepository: UnitsRepository, private usersService: UsersService) {
     }
 
-    async getUnits(getUnitsFilterDto: GetUnitsFilterDto): Promise<Unit[]> {
-        return this.unitsRepository.getUnits(getUnitsFilterDto);
+    async listUnits(getUnitsFilterDto: GetUnitsFilterDto): Promise<Unit[]> {
+        return await this.unitsRepository.getUnits(getUnitsFilterDto);
     }
 
     async getUnitById(id: number, withUsers?: boolean) {

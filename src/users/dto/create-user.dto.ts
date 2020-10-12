@@ -4,6 +4,7 @@
 import {IsNumber, IsOptional, IsString, Matches, MaxLength, MinLength} from "class-validator";
 import {AuthCredentialsDto} from "../../auth/dto/auth-credentials.dto";
 import {Unit} from '../../units/unit.entity';
+import {ApiProperty} from '@nestjs/swagger';
 
 export class CreateUserDto extends AuthCredentialsDto{
 

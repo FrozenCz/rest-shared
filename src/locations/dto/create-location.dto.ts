@@ -7,16 +7,18 @@ export class CreateLocationDto {
     @IsNotEmpty()
     name: string
 
+    @IsNotEmpty()
+    @Transform(value => Number(value))
+    @IsInt()
+    masterUnit: number
+
     @IsOptional()
     @IsNotEmpty()
     @Transform(value => Number(value))
     @IsInt()
     parent: number
 
-    @IsOptional()
-    @IsNotEmpty()
-    @Transform(value => Number(value))
-    @IsInt()
-    masterUnit: number
+
+
 
 }

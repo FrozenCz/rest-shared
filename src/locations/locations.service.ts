@@ -35,32 +35,34 @@ export class LocationsService {
      */
     async createLocation(createLocationDto: CreateLocationDto, user: User): Promise<Location> {
         let parentLocation;
-        let userScopeMasterUnit;
-        const {name, parent = null, masterUnit = null} = createLocationDto || {};
+        let unitScopeMasterUnit;
+        const {name, masterUnit, parent = null} = createLocationDto || {};
+
+        if (!user.unit?.id) {
+            throw new ForbiddenException(`You need to be settled to any unit!`);
+        }
 
         if (parent) {
             parentLocation = await this.getLocationById(parent);
             if (!parentLocation) {
                 throw new NotFoundException(`Location with ID "${parent}" not found! `);
             }
+            unitScopeMasterUnit = await this.unitsService.getMasterUnit(parentLocation.masterUnit);
+        } else {
+            unitScopeMasterUnit = await this.unitsService.getMasterUnit(masterUnit);
         }
 
-        if (user?.unit?.id) {
-            userScopeMasterUnit = await this.unitsService.getMasterUnit(user.unit.id);
-            const unitScopeMasterUnit = await this.unitsService.getMasterUnit(parentLocation.masterUnit);
+        const userScopeMasterUnit = await this.unitsService.getMasterUnit(user.unit.id);
 
-            if (userScopeMasterUnit !== unitScopeMasterUnit) {
-                throw new ForbiddenException(`You are not able to set unit under "${unitScopeMasterUnit}" master unit `);
-            }
+        if (userScopeMasterUnit !== unitScopeMasterUnit) {
+            throw new ForbiddenException(`You are not able to set unit under "${unitScopeMasterUnit}" master unit `);
 
-        } else {
-            userScopeMasterUnit = await this.unitsService.getMasterUnit(masterUnit);
         }
 
         const location = new Location();
         location.name = name;
         location.parent = parentLocation;
-        location.masterUnit = userScopeMasterUnit;
+        location.masterUnit = unitScopeMasterUnit;
         return await location.save();
     }
 
