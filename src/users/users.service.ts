@@ -1,17 +1,20 @@
-import {Injectable, NotFoundException} from "@nestjs/common";
+import {forwardRef, Inject, Injectable, NotFoundException} from "@nestjs/common";
 import {CreateUserDto} from "./dto/create-user.dto";
 import {InjectRepository} from "@nestjs/typeorm";
 import {UserRepository} from "./repositories/user.repository";
 import {User} from "./user.entity";
 import {GetUsersFilterDto} from "./dto/get-users-filter.dto";
 import {UpdateUserDto} from "./dto/update-user.dto";
+import {UnitsService} from '../units/units.service';
 
 
 @Injectable()
 export class UsersService {
     constructor(
         @InjectRepository(UserRepository)
-        private userRepository: UserRepository
+        private userRepository: UserRepository,
+        @Inject(forwardRef(() => UnitsService))
+        private unitsService: UnitsService
     ) {
     }
 
@@ -26,16 +29,20 @@ export class UsersService {
     async createUser(createUserDto: CreateUserDto): Promise<User>{
         const {name, surname, password, username, unitId} = createUserDto;
 
-        if (unitId) {
-            // check if is in tree
 
-        }
 
         const user = new User();
+
         user.username = username;
         user.name = name;
         user.surname = surname;
         user.password = password; // still plain text
+
+        if (unitId) {
+            // if unit is int tree....
+            const unit = await this.unitsService.getUnitById(unitId);
+            user.unit = unit;
+        }
 
         //todo: unit check!!!!
 

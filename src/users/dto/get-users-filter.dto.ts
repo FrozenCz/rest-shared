@@ -3,6 +3,6 @@ import {IsOptional} from "class-validator";
 export class GetUsersFilterDto {
 
     @IsOptional()
-    unit?: number
+    unitId?: number
 
 }

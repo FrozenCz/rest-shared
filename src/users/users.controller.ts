@@ -25,8 +25,8 @@ export class UsersController {
     }
 
     @Get()
-    @UseGuards(AuthGuard(), RightsGuard)
-    @RightsAllowed(RightsTag.getUser)
+    // @UseGuards(AuthGuard(), RightsGuard)
+    // @RightsAllowed(RightsTag.getUser)
     getUsers(@GetUser() user: User, @Query(ValidationPipe) getUsersFilterDto: GetUsersFilterDto
     ): Promise<User[]> {
         return this.usersService.getUsers(getUsersFilterDto);

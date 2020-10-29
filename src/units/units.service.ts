@@ -1,4 +1,4 @@
-import {ConflictException, ForbiddenException, Injectable, NotFoundException} from "@nestjs/common";
+import {ConflictException, ForbiddenException, forwardRef, Inject, Injectable, NotFoundException} from "@nestjs/common";
 import {CreateUnitDto} from "./dto/create-unit.dto";
 import {Unit} from "./unit.entity";
 import {UnitsRepository} from "./repositories/units.repository";
@@ -9,14 +9,18 @@ import {UsersService} from "../users/users.service";
 @Injectable()
 export class UnitsService {
 
-    constructor(private unitsRepository: UnitsRepository, private usersService: UsersService) {
+    constructor(
+        private unitsRepository: UnitsRepository,
+        @Inject(forwardRef(() => UsersService))
+        private usersService: UsersService
+    ) {
     }
 
     async listUnits(getUnitsFilterDto: GetUnitsFilterDto): Promise<Unit[]> {
         return await this.unitsRepository.getUnits(getUnitsFilterDto);
     }
 
-    async getUnitById(id: number, withUsers?: boolean) {
+    async getUnitById(id: number, withUsers?: boolean): Promise<Unit> {
         let found;
 
         if (!withUsers) {
@@ -73,7 +77,6 @@ export class UnitsService {
         }
 
 
-
         const unit = new Unit();
         unit.name = createUnitDto.name;
         unit.parent = parent;
@@ -88,8 +91,8 @@ export class UnitsService {
         const validInformation = ['username'];
         unit.users.map((user) => {
             Object.keys(user).forEach(key => {
-              if(!validInformation.includes(key))
-                  delete user[key];
+                if (!validInformation.includes(key))
+                    delete user[key];
             })
         })
         return unit;
@@ -104,7 +107,7 @@ export class UnitsService {
         //TODO: jednotka by nemela jit smazat pokud obsahuje nejake uzivatele, resp majetek
         const isInTree = this.isManagerInTree(id, user);
 
-        if ( !isInTree ) {
+        if (!isInTree) {
             throw new ForbiddenException('You are not able to do that!');
         }
 
@@ -197,7 +200,7 @@ export class UnitsService {
     }
 
     private async recursiveSearch(units: Unit[], currentUnit: Unit, user: User): Promise<boolean> {
-        if(user.id === 1) return true; // pokud se jedná o administrátora
+        if (user.id === 1) return true; // pokud se jedná o administrátora
         const found = await currentUnit.users.find(unitUser => unitUser.id === user.id);
         /**
          * nalezen

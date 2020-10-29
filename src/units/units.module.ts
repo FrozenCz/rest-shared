@@ -1,4 +1,4 @@
-import {Module} from "@nestjs/common";
+import {forwardRef, Module} from "@nestjs/common";
 import {UnitsController} from "./units.controller";
 import {UsersModule} from "../users/users.module";
 import {UnitsService} from "./units.service";
@@ -9,9 +9,9 @@ import {PassportModule} from "@nestjs/passport";
 
 @Module({
     imports: [
-        UsersModule,
         TypeOrmModule.forFeature([UnitsRepository]),
-        PassportModule.register({defaultStrategy: 'jwt'})
+        PassportModule.register({defaultStrategy: 'jwt'}),
+        forwardRef(() => UsersModule)
     ],
     controllers: [UnitsController],
     providers: [UnitsService],
