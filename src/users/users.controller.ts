@@ -9,7 +9,6 @@ import {UsersService} from "./users.service";
 import {RightsGuard} from "../guards/rights.guard";
 import {UpdateUserDto} from "./dto/update-user.dto";
 import {RightsTag} from "../rights/config/rights.list";
-import {ApiProperty} from '@nestjs/swagger';
 
 
 @Controller('users')
@@ -21,7 +20,7 @@ export class UsersController {
     @Post()
     @UseGuards(AuthGuard(), RightsGuard)
     @RightsAllowed(RightsTag.createUser)
-    createUser(@GetUser() user: User, @Body(ValidationPipe) createUserDto: CreateUserDto): Promise<void> {
+    createUser(@GetUser() user: User, @Body(ValidationPipe) createUserDto: CreateUserDto): Promise<User> {
         return this.usersService.createUser(createUserDto);
     }
 

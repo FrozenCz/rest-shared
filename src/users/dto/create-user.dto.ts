@@ -20,5 +20,5 @@ export class CreateUserDto extends AuthCredentialsDto{
 
   @IsOptional()
   @IsNumber()
-  unit?: number | Unit;
+  unitId?: number;
 }

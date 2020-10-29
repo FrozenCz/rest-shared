@@ -32,8 +32,9 @@ export class AuthService {
             rightsAsString+=rights.tag+' ';
         })
 
-
-        const payload: JwtPayloadInterface = { username: user.username, rights: rightsAsString.trim() };
+        console.log(user);
+        const unitId = user.unit?.id ? user.unit.id : null;
+        const payload: JwtPayloadInterface = { username: user.username, rights: rightsAsString.trim(), unitId: unitId};
         const accessToken = await this.jwtService.sign(payload);
         return { accessToken };
 

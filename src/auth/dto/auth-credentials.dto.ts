@@ -4,6 +4,7 @@ export class AuthCredentialsDto {
     @IsString()
     @MinLength(6)
     @MaxLength(20)
+    @Matches(/^[a-zA-Z0-9]*$/, {message: 'username must contain only letters and numbers and must be without space'})
     username: string;
 
     @IsString()

@@ -53,6 +53,7 @@ export class UnitsService {
     /**
      * vytvorit jednotku, pokud je zaslan i @parent tak se kontroluje zda existuje
      * @param createUnitDto
+     * @param user
      * @return unit
      */
     async createUnit(createUnitDto: CreateUnitDto, user: User): Promise<Unit> {

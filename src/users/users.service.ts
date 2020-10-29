@@ -23,8 +23,13 @@ export class UsersService {
         return await this.userRepository.count();
     }
 
-    async createUser(createUserDto: CreateUserDto): Promise<void>{
-        const {name, surname, password, username, unit} = createUserDto;
+    async createUser(createUserDto: CreateUserDto): Promise<User>{
+        const {name, surname, password, username, unitId} = createUserDto;
+
+        if (unitId) {
+            // check if is in tree
+
+        }
 
         const user = new User();
         user.username = username;

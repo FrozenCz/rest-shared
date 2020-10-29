@@ -1,9 +1,8 @@
 import {EntityRepository, Repository} from 'typeorm';
 import {User} from '../user.entity';
 import {GetUsersFilterDto} from "../dto/get-users-filter.dto";
-import {CreateUserDto} from "../dto/create-user.dto";
 import * as bcrypt from 'bcryptjs';
-import {ConflictException, InternalServerErrorException, NotFoundException} from "@nestjs/common";
+import {ConflictException, InternalServerErrorException} from "@nestjs/common";
 import {AuthCredentialsDto} from "../../auth/dto/auth-credentials.dto";
 
 
@@ -15,7 +14,7 @@ export class UserRepository extends Repository<User> {
      * vytvori uzivatele
      * @param createUserDto
      */
-    async createUser(validUser: User): Promise<void> {
+    async createUser(validUser: User): Promise<User> {
 
         const user = validUser;
         user.salt = await bcrypt.genSalt();
@@ -30,6 +29,10 @@ export class UserRepository extends Repository<User> {
                 throw new InternalServerErrorException();
             }
         }
+        delete user.salt;
+        delete user.password;
+
+        return user;
     }
 
     async validateUser(authCredentialsDto: AuthCredentialsDto): Promise<User> {
@@ -37,6 +40,7 @@ export class UserRepository extends Repository<User> {
         const user = await this.createQueryBuilder('user')
             .addSelect(['user.salt', 'user.password'])
             .leftJoinAndSelect('user.rights', 'rights')
+            .leftJoinAndSelect('user.unit', 'units')
             .where('user.username = :username', {username})
             .getOne();
 
