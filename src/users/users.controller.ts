@@ -1,4 +1,16 @@
-import {Body, Controller, Get, Param, ParseIntPipe, Post, Put, Query, UseGuards, ValidationPipe} from "@nestjs/common";
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    ParseIntPipe,
+    Post,
+    Put,
+    Query,
+    UseGuards,
+    ValidationPipe
+} from "@nestjs/common";
 import {AuthGuard} from "@nestjs/passport";
 import {RightsAllowed} from "../guards/rights-allowed.decorator";
 import {GetUser} from "./utils/get-user.decorator";
@@ -9,6 +21,7 @@ import {UsersService} from "./users.service";
 import {RightsGuard} from "../guards/rights.guard";
 import {UpdateUserDto} from "./dto/update-user.dto";
 import {RightsTag} from "../rights/config/rights.list";
+import {SetUserRightsDto} from './dto/set-user-rights.dto';
 
 
 @Controller('users')
@@ -40,8 +53,22 @@ export class UsersController {
     @Put('/:id')
     @UseGuards(AuthGuard(), RightsGuard)
     @RightsAllowed(RightsTag.updateUsersInformation)
-    updateUser(@Param('id', ParseIntPipe) id:number, @GetUser() user:User, @Body(ValidationPipe) updateUserDto: UpdateUserDto): Promise<void> {
+    updateUser(@Param('id', ParseIntPipe) id:number, @GetUser() user:User, @Body(ValidationPipe) updateUserDto: UpdateUserDto): Promise<User> {
         return this.usersService.updateUser(id, updateUserDto, user);
+    }
+
+    @Delete('/:id')
+    @UseGuards(AuthGuard(), RightsGuard)
+    @RightsAllowed(RightsTag.deleteUser)
+    deleteUser(@Param('id', ParseIntPipe) id: number, @GetUser() user: User): Promise<void> {
+        return this.usersService.deleteUser(id, user);
+    }
+
+    @Put('/:id/rights')
+    @UseGuards(AuthGuard(), RightsGuard)
+    @RightsAllowed(RightsTag.settingRights)
+    setUsersRights(@Param('id', ParseIntPipe) userId: number, @GetUser() user: User, @Body(ValidationPipe) setUserRightsDto: SetUserRightsDto): Promise<void> {
+        return this.usersService.setUsersRights(userId, setUserRightsDto, user);
     }
 
     // @Post('/:id/users')

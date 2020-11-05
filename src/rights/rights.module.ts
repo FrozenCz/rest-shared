@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import {forwardRef, Module} from '@nestjs/common';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import {RightsController} from './rights.controller';
 import {RightsRepository} from "./repositories/rights.repository";
@@ -11,7 +11,7 @@ import {jwtModuleOptions} from "../config/jwt.config";
 
 @Module({
   imports: [
-      UsersModule,
+      forwardRef(() => UsersModule),
       TypeOrmModule.forFeature([RightsRepository]),
       PassportModule.register({defaultStrategy: 'jwt'}),
       JwtModule.register(jwtModuleOptions),

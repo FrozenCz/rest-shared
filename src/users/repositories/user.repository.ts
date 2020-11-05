@@ -56,6 +56,7 @@ export class UserRepository extends Repository<User> {
         const query = this.createQueryBuilder('user')
             .addSelect(['user.unit'])
             .leftJoinAndSelect('user.unit', 'units')
+            .where('user.id != 1')
         // if (unitId) query.where('user.unit = :unit', {unitId}) // TODO: UDELAT OMEZENI NA JEDNOTKU
         const users = await query.getMany();
         return users;

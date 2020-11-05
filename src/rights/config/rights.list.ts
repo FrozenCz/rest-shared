@@ -21,6 +21,7 @@ export enum RightsTag {
     createUser = 'createUser',
     deleteUser = 'deleteUser',
     updateUsersInformation = 'updateUsersInformation',
+    settingRights = 'settingRights',
 
     createRights = 'createRights',
 
@@ -44,6 +45,7 @@ export const RightsList: CreateRightsDto[] = [
     { relatedTo: RightsCategory.users, tag: RightsTag.createUser, name:'tvorba uživatele' },
     { relatedTo: RightsCategory.users, tag: RightsTag.deleteUser, name:'smazání uživatele' },
     { relatedTo: RightsCategory.users, tag: RightsTag.updateUsersInformation, name:'aktualizace uživatelských informací', description: 'Aktualizace jména, příjmení a fotografie?' },
+    { relatedTo: RightsCategory.users, tag: RightsTag.settingRights, name:'nastavování práv uživatelů' },
 
     { relatedTo: RightsCategory.rights, tag: RightsTag.createRights, name:'tvorba práv' },
 

@@ -139,7 +139,7 @@ export class UnitsService {
     async isManagerInTree(unitId: number, user: User): Promise<boolean> {
         const units = await this.unitsRepository.getUnits();
 
-        if (units.length === 0) {
+        if (units.length === 0 || user.unit === null) {
             return true;
         }
 

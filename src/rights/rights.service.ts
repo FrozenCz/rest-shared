@@ -1,4 +1,4 @@
-import {Injectable} from "@nestjs/common";
+import {Injectable, NotFoundException} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
 import {RightsRepository} from "./repositories/rights.repository";
 import {Rights} from "./rights.entity";
@@ -44,8 +44,15 @@ export class RightsService {
                 }
             })
         });
-
-
     }
 
+    async getRightsById(rightsToAdd: number): Promise<Rights> {
+        const rights = await this.rightsRepository.findOne(rightsToAdd);
+
+        if (!rights) {
+            throw new NotFoundException(`Rights with ${rightsToAdd} was not found!`);
+        }
+
+        return rights;
+    }
 }
